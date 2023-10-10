@@ -1,10 +1,6 @@
-#!/usr/bin/python3
-""" User class for all """
-import enum
-
+""" This module contains the User class """
 from datetime import datetime
 from email_validator import validate_email
-from flask_login import UserMixin
 from hashlib import md5
 from sqlalchemy import (
     String,
@@ -13,14 +9,13 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import relationship
 from typing import Any
-
 from models.base import (
     BaseModel,
     Base,
 )
 
 
-class User(BaseModel, UserMixin, Base):
+class User(BaseModel, Base):
     """ User class """
 
     __tablename__ = "users"
@@ -42,7 +37,6 @@ class User(BaseModel, UserMixin, Base):
 
     gender = Column(
         String(7),
-        default='male',
         nullable=False
     )
 
@@ -59,7 +53,8 @@ class User(BaseModel, UserMixin, Base):
 
     phone = Column(
         String(20),
-        unique=True
+        unique=True,
+        nullable=True
     )
 
     password = Column(

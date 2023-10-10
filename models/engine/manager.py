@@ -1,8 +1,4 @@
-#!/usr/bin/env python3
-"""
-    Contains the Manager (Mostly for creating folders for users)
-"""
-
+""" This module contains the Manager class (Mostly for creating folders for users) """
 from __future__ import print_function
 
 import os.path  # To confirm the token presence (No need to sign in)

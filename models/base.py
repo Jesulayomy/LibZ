@@ -1,6 +1,4 @@
-#!/usr/bin/env python3
-""" The base class to inherit for other classes """
-
+""" This module contains the Base class to inherit for other classes """
 from datetime import datetime
 from sqlalchemy import (
     Column,
@@ -47,13 +45,15 @@ class BaseModel:
     def to_dict(self) -> Dict[str, Any]:
         """ Returns the dictionary representation of the implied class """
 
-        self_dict = self.__dict__.copy()
-        for key in self_dict.keys():
+        self_dict = {}
+        for key, val in self.__dict__.items():
             if key == "created_at":
                 self_dict[key] = self.created_at.isoformat()
-            if key == "books":
-                self_dict[key] = [book.to_dict() for book in self_dict[key]]
+            else:
+                self_dict[key] = val
 
+        if "books" in self_dict:
+            del self_dict["books"]    
         if "password" in self_dict:
             del self_dict["password"]
         if "_sa_instance_state" in self_dict:

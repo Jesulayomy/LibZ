@@ -1,5 +1,4 @@
-#!/usr/bin/env python3
-""" Storage Class manager """
+""" This module contains the storage class for the database"""
 from contextlib import contextmanager
 from dotenv.main import load_dotenv
 from os import environ
@@ -14,7 +13,6 @@ from typing import (
     Type,
     Union,
 )
-
 from models.base import Base
 from models.book import Book
 from models.engine.manager import Manager
@@ -40,7 +38,7 @@ class Storage:
             dbname = environ["DB_PUBLIB_TEST_NAME"]
         """ Remove echo when done testing """
         self.__engine = create_engine(
-            'mysql+mysqldb://{}:{}@{}/{}'.format(
+            'mysql+mysqlconnector://{}:{}@{}/{}'.format(
                 uname, passwd, dbhost, dbname),
             pool_pre_ping=True,
             poolclass=QueuePool,
@@ -138,13 +136,13 @@ class Storage:
                 count += session.query(Book).count()
                 return count
 
-    def new(self, obj: Union[User, Book]) -> None:
+    def add(self, obj: Union[User, Book]) -> None:
         """ Adds an object to the current session """
 
         with self.session_scope() as session:
-            if type(obj) == User:
-                manager = Manager()
-                obj = manager.create_user_folder(obj)
+            # if type(obj) == User:
+            #     manager = Manager()
+            #     obj = manager.create_user_folder(obj)
             session.add(obj)
 
     def save(self) -> None:

@@ -1,7 +1,4 @@
-#!/usr/bin/python3
-""" Event class for handling events """
-import enum
-
+""" This module contains the Book class """
 from sqlalchemy import (
     Table,
     DECIMAL,
@@ -13,7 +10,6 @@ from sqlalchemy import (
     ForeignKey,
 )
 from sqlalchemy.orm import relationship
-
 from models.base import (
     BaseModel,
     Base,
