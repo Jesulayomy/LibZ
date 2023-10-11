@@ -1,8 +1,12 @@
-""" This module contains the Manager class (Mostly for creating folders for users) """
+"""
+    This module contains the Manager class
+    (Mostly forcreating folders for users)
+"""
 from __future__ import print_function
 
 import os.path  # To confirm the token presence (No need to sign in)
 
+from datetime import datetime
 from google.auth.transport.requests import Request
 # Used for credential
 from google.oauth2.credentials import Credentials
@@ -13,9 +17,13 @@ from googleapiclient.discovery import build
 # This is used to build the service
 from googleapiclient.errors import HttpError
 # Handles error in requests
-from googleapiclient.http import MediaFileUpload
+from googleapiclient.http import (
+    MediaFileUpload,
+    MediaIoBaseUpload,
+)
 # Creates a media file to upload
-
+from mimetypes import guess_extension
+from magic import Magic
 from typing import (
     Dict,
     Type,
@@ -32,10 +40,11 @@ class Manager:
 
     CREDS = None
     SCOPES = [
-        'https://www.googleapis.com/auth/drive.file',
-        'https://www.googleapis.com/auth/drive.resource',
-        'https://www.googleapis.com/auth/drive.metadata.readonly'
+            'https://www.googleapis.com/auth/drive.file',
         ]
+    # 'https://www.googleapis.com/auth/drive.resource',
+    # 'https://www.googleapis.com/auth/drive.metadata.readonly'
+
     SERVICE = None
 
     def __init__(self):
@@ -46,6 +55,7 @@ class Manager:
                 Manager.SCOPES
             )
         self.validate_creds(Manager.CREDS)
+        self.get_service(Manager.CREDS)
 
     def validate_creds(self, creds):
         """
@@ -68,15 +78,12 @@ class Manager:
         """ Builds a service object for the api """
         try:
             Manager.SERVICE = build('drive', 'v3', credentials=creds)
-            return Manager.SERVICE
         except HttpError as err:
             print(err)
-        return None
 
     def create_user_folder(self, user: Type[User]):
         """ Create a folder for the user """
-        service = self.get_service(Manager.CREDS)
-        if service is None:
+        if Manager.SERVICE is None:
             return None
         folder_metadata = {
             'name': user.id,
@@ -84,12 +91,51 @@ class Manager:
             'description': f'Uploaded by: {user.display_name}'
         }
 
-        folder = service.files().create(
+        folder = Manager.SERVICE.files().create(
             body=folder_metadata, fields='id').execute()
 
-        user.folder = folder.get('id')
-        print(f'Folder ID: {folder.get("id")}')
-        return user
+        return folder.get('id')
+
+    def create_book(self, parent, file):
+        """ Creates a book in the user's folder """
+
+        if Manager.SERVICE is None:
+            return None
+        magik = Magic(mime=True)
+        # file.content_type not reliable to determine the mimetype
+        mimetype = magik.from_buffer(file.stream.read())
+        extension = guess_extension(mimetype, strict=False)
+        filename = file.filename
+        if extension:
+            if filename[len(filename) - len(extension):] != extension:
+                filename = filename + extension
+        file_metadata = {
+            'name': filename,
+            'parents': [parent]
+        }
+        media = MediaIoBaseUpload(file.stream, mimetype=mimetype)
+        try:
+            file = Manager.SERVICE.files().create(
+                body=file_metadata,
+                media_body=media,
+                fields='createdTime,webContentLink,id,name'
+            ).execute()
+        except Exception as e:
+            print(e)
+            return None
+        cTime = datetime.strptime(
+            file.get('createdTime'),
+            "%Y-%m-%dT%H:%M:%S.%fZ"
+        )
+        result = {
+            'createdTime': cTime,
+            'downloadLink': file.get('webContentLink'),
+            'driveId': file.get('id'),
+            'driveName': file.get('name'),
+            # 'iconLink': file.get('iconLink'),
+            # 'thumbnailLink': file.get('thumbnailLink'),
+        }
+        return result
 
     def refresh_book(self, book: Type[Book]):
         """ Refreshes the book data from the drive """

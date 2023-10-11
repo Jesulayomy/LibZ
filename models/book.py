@@ -40,31 +40,10 @@ class Book(BaseModel, Base):
     owner_id = Column(
         String(40),
         ForeignKey("users.id", ondelete="CASCADE"),
-        nullable=False
-    )
-
-    # Ref: Drive parameters
-    createdTime = Column(
-        DateTime,
         nullable=True
     )
 
-    modifiedTime = Column(
-        DateTime,
-        nullable=True
-    )
-
-    driveId = Column(
-        String(40),
-        nullable=True
-    )
-
-    originalName = Column(
-        String(255),
-        nullable=True
-    )
-
-    downloadLink = Column(
+    description = Column(
         String(1023),
         nullable=True
     )
@@ -74,13 +53,15 @@ class Book(BaseModel, Base):
         nullable=True
     )
 
-    thumbnail = Column(
-        String(1023),
-        nullable=True
+    downloads = Column(
+        Integer,
+        default=0,
+        nullable=False
     )
 
-    iconLink = Column(
-        String(1023),
+    # Ref: Drive parameters
+    createdTime = Column(
+        DateTime,
         nullable=True
     )
 
@@ -89,7 +70,36 @@ class Book(BaseModel, Base):
         nullable=True
     )
 
-    description = Column(
+    driveId = Column(
+        String(40),
+        nullable=True
+    )
+
+    driveName = Column(
+        String(255),
+        nullable=True
+    )
+
+    # originalName = Column(
+    #     String(255),
+    #     nullable=True
+    # )
+    # modifiedTime = Column(
+    #     DateTime,
+    #     nullable=True
+    # )
+
+    downloadLink = Column(
+        String(1023),
+        nullable=True
+    )
+
+    thumbnailLink = Column(
+        String(1023),
+        nullable=True
+    )
+
+    iconLink = Column(
         String(1023),
         nullable=True
     )

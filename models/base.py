@@ -53,7 +53,7 @@ class BaseModel:
                 self_dict[key] = val
 
         if "books" in self_dict:
-            del self_dict["books"]    
+            del self_dict["books"]
         if "password" in self_dict:
             del self_dict["password"]
         if "_sa_instance_state" in self_dict:

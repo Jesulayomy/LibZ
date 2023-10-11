@@ -15,7 +15,6 @@ from typing import (
 )
 from models.base import Base
 from models.book import Book
-from models.engine.manager import Manager
 from models.user import User
 
 
@@ -136,13 +135,10 @@ class Storage:
                 count += session.query(Book).count()
                 return count
 
-    def add(self, obj: Union[User, Book]) -> None:
+    def add(self, obj: Union[User, Book], file=None) -> None:
         """ Adds an object to the current session """
 
         with self.session_scope() as session:
-            # if type(obj) == User:
-            #     manager = Manager()
-            #     obj = manager.create_user_folder(obj)
             session.add(obj)
 
     def save(self) -> None:

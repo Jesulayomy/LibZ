@@ -1,7 +1,12 @@
 """ This module contains the user view """
 from api.views import app_views
-from flask import jsonify, request, abort
+from flask import (
+    jsonify,
+    request,
+    abort,
+)
 from models import storage
+from models import manager
 from models.user import User
 from models.book import Book
 
@@ -30,8 +35,9 @@ def post_user():
         if r not in data:
             abort(400, 'Missing {}'.format(r))
     user = User(**data)
+    folder_id = manager.create_user_folder(user)
+    user.folder = folder_id
     storage.add(user)
-    storage.save()
     return jsonify(user.to_dict()), 201
 
 
@@ -63,7 +69,6 @@ def put_user(user_id):
         if k not in ignore:
             setattr(user, k, v)
     storage.add(user)
-    storage.save()
     return jsonify(user.to_dict())
 
 
