@@ -62,7 +62,7 @@ class User(BaseModel, Base):
         nullable=False
     )
 
-    my_books = relationship(
+    books = relationship(
         "Book",
         backref="owner",
         passive_deletes=True

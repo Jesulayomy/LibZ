@@ -81,3 +81,12 @@ def delete_user(user_id):
         storage.save()
         return jsonify({}), 200
     abort(404)
+
+
+@app_views.route('/users/<user_id>/books', methods=['GET'], strict_slashes=False)
+def get_user_books(user_id):
+    """ Returns all books from a user """
+    user = storage.get('User', user_id)
+    if not user:
+        abort(404)
+    return jsonify([book.to_dict() for book in user.books])
