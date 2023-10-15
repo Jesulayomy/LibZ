@@ -1,0 +1,35 @@
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 30px;
+    background-color: #424b54;
+    color: #fff;
+    height: 60px;
+    margin-bottom: 30px;
+}
+
+header div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 20%;
+    height: 100%;
+}
+
+header h1, header input, header img {
+    height: 80%;
+}
+
+header input {
+    padding: 5px;
+    border-radius: 20px;
+    border: none;
+    width: 75%;
+}
+
+header img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}

@@ -1,0 +1,13 @@
+.top-upload {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin: 10px auto;
+}
+
+.top-upload img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+}
