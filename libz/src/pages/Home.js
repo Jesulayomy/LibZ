@@ -2,11 +2,13 @@ import { useState } from 'react';
 import Card from '../components/Card';
 import TopUpload from '../components/TopUpload';
 import BookDetails from '../components/BookDetails';
+import BookUpload from '../components/BookUpload';
 import { mockBooks, mockTopBooks, mockUploaders } from '../mock';
 import '../styles/Home.css';
 
 function Home() {
   const [bookDetails, setBookDetails] = useState(null);
+  const [showUpload, setShowUpload] = useState(false);
   return (
     <div className='home'>
       <p className='sub-head'>
@@ -55,17 +57,27 @@ function Home() {
         ))}
       </div>
       {bookDetails && (
-        <BookDetails
-          name={bookDetails.name}
-          description={bookDetails.description}
-          author={bookDetails.author}
-          uploader={bookDetails.uploader}
-          downloads={bookDetails.downloads}
-          thumbnailLink={bookDetails.thumbnailLink}
-          downloadLink={bookDetails.downloadLink}
-          close={() => setBookDetails(null)}
-        />
+        <div className='modal'>
+          <BookDetails
+            name={bookDetails.name}
+            description={bookDetails.description}
+            author={bookDetails.author}
+            uploader={bookDetails.uploader}
+            downloads={bookDetails.downloads}
+            thumbnailLink={bookDetails.thumbnailLink}
+            downloadLink={bookDetails.downloadLink}
+            close={() => setBookDetails(null)}
+          />
+        </div>
       )}
+      {showUpload && (
+        <div className='modal'>
+          <BookUpload close={() => setShowUpload(false)} />
+        </div>
+      )}
+      <button className='upload-button' onClick={() => setShowUpload(true)}>
+        Upload Book
+      </button>
     </div>
   );
 }

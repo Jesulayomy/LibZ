@@ -11,22 +11,22 @@ function BookDetails({
   close,
 }) {
   return (
-    <div className='modal'>
-      <div className='book-details'>
-        <button onClick={close} className='close-button'>
-          Close
-        </button>
+    <div className='book-details'>
+      <button onClick={close} className='close-button'>
+        Close
+      </button>
+      <div className='book-details-img'>
         <img src={thumbnailLink} alt={name} />
-        <div className='book-details-body'>
-          <p className='name'>{name}</p>
-          <p className='description'>{description}</p>
-          <p>Author: {author}</p>
-          <p>Uploaded by: {uploader}</p>
-          <p>Downloads: {downloads}</p>
-          <a href={downloadLink} target='_blank' rel='noreferrer'>
-            <button>Download</button>
-          </a>
-        </div>
+      </div>
+      <div className='book-details-body'>
+        <p className='name'>{name}</p>
+        <p className='description'>{description}</p>
+        <p>Author: {author}</p>
+        <p>Uploaded by: {uploader}</p>
+        <p>Downloads: {downloads}</p>
+        <a href={downloadLink} target='_blank' rel='noreferrer'>
+          <button>Download</button>
+        </a>
       </div>
     </div>
   );
