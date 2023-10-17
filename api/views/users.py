@@ -21,7 +21,7 @@ def get_users():
 @app_views.route('/users', methods=['POST'], strict_slashes=False)
 def post_user():
     """ Creates a user """
-    data = request.get_json()
+    data = request.form.to_dict()
     if not data:
         abort(400, 'Not a JSON')
     required = [
@@ -37,7 +37,11 @@ def post_user():
     user = User(**data)
     folder_id = manager.create_user_folder(user)
     user.folder = folder_id
-    storage.add(user)
+    try:
+        storage.add(user)
+    except Exception:
+        user = storage.lookup(email=data['email'])
+        return jsonify(user.to_dict()), 409
     return jsonify(user.to_dict()), 201
 
 
@@ -86,7 +90,10 @@ def delete_user(user_id):
 @app_views.route('/users/<user_id>/books', methods=['GET'], strict_slashes=False)
 def get_user_books(user_id):
     """ Returns all books from a user """
-    user = storage.get('User', user_id)
+    session = storage.Session()
+    user = session.query(User).filter(User.id == user_id).one()
     if not user:
         abort(404)
-    return jsonify([book.to_dict() for book in user.books])
+    books = [book.to_dict() for book in user.books]
+    session.close()
+    return jsonify(books)

@@ -25,7 +25,7 @@ def post_book():
     """ Uploads a book and stores it """
     if 'book_file' not in request.files:
         abort(400, 'Missing file')
-    book_data = request.get_json()
+    book_data = request.form.to_dict(flat=True)
     if not book_data:
         abort(400, 'Not a JSON')
     file = request.files['book_file']
@@ -50,6 +50,12 @@ def post_book():
         'public',
     ]
     for field in required:
+        # Refactor
+        if field == 'public':
+            if book_data[field].lower() == 'true':
+                book_data[field] = True
+            elif book_data[field].lower() == 'false':
+                book_data[field] = False
         if field not in book_data:
             abort(400, 'Missing {}'.format(field))
     book_data['size'] = size
@@ -60,3 +66,34 @@ def post_book():
         setattr(book, key, value)
     storage.add(book)
     return jsonify(book.to_dict()), 201
+
+
+@app_views.route('/books/<book_id>', methods=['GET'], strict_slashes=False)
+def get_book(book_id):
+    book = storage.get('Book', book_id)
+    if book:
+        return jsonify(book.to_dict())
+    abort(404)
+
+
+@app_views.route('/books/<book_id>', methods=['DELETE'], strict_slashes=False)
+def delete_book(book_id):
+    book = storage.get('Book', book_id)
+    if book:
+        manager.delete_book(book.driveId)
+        storage.delete(book)
+        return jsonify({}), 200
+    abort(404)
+
+@app_views.route('/books/<book_id>', methods=['PUT'], strict_slashes=False)
+def put_book(book_id):
+    book = storage.get('Book', book_id)
+    if not book:
+        abort(404)
+    data = request.form.to_dict()
+    if not data:
+        abort(400, 'Not a JSON')
+    for key, value in data.items():
+        setattr(book, key, value)
+    storage.add(book)
+    return jsonify(book.to_dict()), 200

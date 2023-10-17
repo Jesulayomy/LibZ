@@ -60,11 +60,6 @@ class Book(BaseModel, Base):
     )
 
     # Ref: Drive parameters
-    createdTime = Column(
-        DateTime,
-        nullable=True
-    )
-
     parents = Column(
         String(40),
         nullable=True
@@ -79,15 +74,6 @@ class Book(BaseModel, Base):
         String(255),
         nullable=True
     )
-
-    # originalName = Column(
-    #     String(255),
-    #     nullable=True
-    # )
-    # modifiedTime = Column(
-    #     DateTime,
-    #     nullable=True
-    # )
 
     downloadLink = Column(
         String(1023),
