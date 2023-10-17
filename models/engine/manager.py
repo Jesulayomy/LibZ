@@ -41,9 +41,8 @@ class Manager:
     CREDS = None
     SCOPES = [
             'https://www.googleapis.com/auth/drive.file',
+            'https://www.googleapis.com/auth/drive.metadata.readonly',
         ]
-    # 'https://www.googleapis.com/auth/drive.resource',
-    # 'https://www.googleapis.com/auth/drive.metadata.readonly'
 
     SERVICE = None
 
@@ -118,25 +117,33 @@ class Manager:
             file = Manager.SERVICE.files().create(
                 body=file_metadata,
                 media_body=media,
-                fields='createdTime,webContentLink,id,name'
+                fields='*'
+            ).execute()
+            Manager.SERVICE.permissions().create(
+                fileId=file.get('id'),
+                body={
+                    'role': 'reader',
+                    'type': 'anyone',
+                }
             ).execute()
         except Exception as e:
             print(e)
             return None
-        cTime = datetime.strptime(
-            file.get('createdTime'),
-            "%Y-%m-%dT%H:%M:%S.%fZ"
-        )
         result = {
-            'createdTime': cTime,
             'downloadLink': file.get('webContentLink'),
             'driveId': file.get('id'),
             'driveName': file.get('name'),
-            # 'iconLink': file.get('iconLink'),
-            # 'thumbnailLink': file.get('thumbnailLink'),
+            'iconLink': file.get('iconLink'),
+            'size': int(file.get('size')),
         }
         return result
 
-    def refresh_book(self, book: Type[Book]):
-        """ Refreshes the book data from the drive """
-        pass
+    def delete_book(self, driveId: str):
+        """ Deletes the book data from the drive """
+        if Manager.SERVICE is None:
+            return None
+        try:
+            Manager.SERVICE.files().delete(fileId=driveId).execute()
+        except Exception as e:
+            print(e)
+            return None
