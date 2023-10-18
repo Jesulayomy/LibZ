@@ -45,9 +45,9 @@ def logout():
     return response
 
 
-@auth.route('/auth_status')
-def auth_status():
-    """ Checks the authentication status """
+@auth.route('/current_user', methods=['GET'])
+def get_current_user():
+    """ gets the current authenticated user """
     if current_user.is_authenticated:
-        return jsonify({'authenticated': True, 'user': current_user.to_dict()})
-    return jsonify({'authenticated': False})
+        return jsonify(current_user.to_dict())
+    return jsonify({})
