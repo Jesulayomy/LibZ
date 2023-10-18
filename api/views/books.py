@@ -5,6 +5,7 @@ from flask import (
     request,
     abort,
 )
+from flask_login import login_required, current_user
 from models import storage
 from models import manager
 from models.user import User
@@ -18,9 +19,8 @@ def get_books():
     return jsonify([book.to_dict() for book in books.values()])
 
 
-# Authenticate these requests and allow user.folder
-#   to be retrieved from the authenticated user
 @app_views.route('/books', methods=['POST'], strict_slashes=False)
+@login_required
 def post_book():
     """ Uploads a book and stores it """
     if 'book_file' not in request.files:
@@ -60,7 +60,7 @@ def post_book():
             abort(400, 'Missing {}'.format(field))
     book_data['size'] = size
     book = Book(**book_data)
-    user_folder = book_data['user_folder']
+    user_folder = current_user.folder
     more_data = manager.create_book(user_folder, file)
     for key, value in more_data.items():
         setattr(book, key, value)

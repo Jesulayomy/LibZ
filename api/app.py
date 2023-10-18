@@ -1,25 +1,36 @@
 """ This module contains the flask app """
 from models import storage
 from api.views import app_views
+from api.auths import auth
 from os import environ
 from flask import (
     Flask,
-    render_template,
     make_response,
     jsonify,
 )
 from flask_cors import CORS
+from flask_login import LoginManager
 from dotenv.main import load_dotenv
 
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = environ.get('SECRET_KEY')
+
+login_manager = LoginManager(app)
+
 app.register_blueprint(app_views)
+app.register_blueprint(auth)
 
 cors = CORS(
     app,
     resources={r"/*": {"origins": "*"}},
     supports_credentials=True)
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    """ Loads the user """
+    return storage.get('User', user_id)
 
 
 @app.teardown_appcontext

@@ -4,11 +4,15 @@ from flask import (
     jsonify,
     request,
     abort,
+    current_app,
+    make_response
 )
+from flask_login import login_user
 from models import storage
 from models import manager
 from models.user import User
 from models.book import Book
+import jwt
 
 
 @app_views.route('/users', methods=['GET'], strict_slashes=False)
@@ -21,7 +25,7 @@ def get_users():
 @app_views.route('/users', methods=['POST'], strict_slashes=False)
 def post_user():
     """ Creates a user """
-    data = request.form.to_dict()
+    data = request.get_json()
     if not data:
         abort(400, 'Not a JSON')
     required = [
@@ -41,7 +45,14 @@ def post_user():
     folder_id = manager.create_user_folder(user)
     user.folder = folder_id
     storage.add(user)
-    return jsonify(user.to_dict()), 201
+    login_user(user)
+    token = jwt.encode(
+        {'id': user.id},
+        current_app.config['SECRET_KEY'],
+        algorithm='HS256')
+    response = make_response(jsonify(user.to_dict()), 201)
+    response.set_cookie('token', token, httponly=False)
+    return response
 
 
 @app_views.route('/users/<user_id>', methods=['GET'], strict_slashes=False)

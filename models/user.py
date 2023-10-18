@@ -13,9 +13,10 @@ from models.base import (
     BaseModel,
     Base,
 )
+from flask_login import UserMixin
 
 
-class User(BaseModel, Base):
+class User(BaseModel, UserMixin, Base):
     """ User class """
 
     __tablename__ = "users"
