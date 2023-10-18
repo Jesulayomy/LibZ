@@ -22,8 +22,7 @@ from googleapiclient.http import (
     MediaIoBaseUpload,
 )
 # Creates a media file to upload
-from mimetypes import guess_extension
-from magic import Magic
+from mimetypes import guess_type, guess_extension
 from typing import (
     Dict,
     Type,
@@ -100,9 +99,7 @@ class Manager:
 
         if Manager.SERVICE is None:
             return None
-        magik = Magic(mime=True)
-        # file.content_type not reliable to determine the mimetype
-        mimetype = magik.from_buffer(file.stream.read())
+        mimetype = guess_type(file.filename)[0]
         extension = guess_extension(mimetype, strict=False)
         filename = file.filename
         if extension:

@@ -34,14 +34,13 @@ def post_user():
     for r in required:
         if r not in data:
             abort(400, 'Missing {}'.format(r))
+    existing_user = storage.lookup(email=data['email'])
+    if existing_user:
+        abort(409, 'User with email already exists')
     user = User(**data)
     folder_id = manager.create_user_folder(user)
     user.folder = folder_id
-    try:
-        storage.add(user)
-    except Exception:
-        user = storage.lookup(email=data['email'])
-        return jsonify(user.to_dict()), 409
+    storage.add(user)
     return jsonify(user.to_dict()), 201
 
 
@@ -90,10 +89,10 @@ def delete_user(user_id):
 @app_views.route('/users/<user_id>/books', methods=['GET'], strict_slashes=False)
 def get_user_books(user_id):
     """ Returns all books from a user """
-    session = storage.Session()
-    user = session.query(User).filter(User.id == user_id).one()
+    user = storage.get('User', user_id)
     if not user:
         abort(404)
-    books = [book.to_dict() for book in user.books]
-    session.close()
+    with storage.session_scope() as session:
+        user = session.merge(user)
+        books = [book.to_dict() for book in user.books]
     return jsonify(books)

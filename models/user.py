@@ -64,8 +64,8 @@ class User(BaseModel, Base):
 
     books = relationship(
         "Book",
-        backref="owner",
-        passive_deletes=True
+        backref="user",
+        cascade="all"
     )
 
     # Drive folder refrencing user

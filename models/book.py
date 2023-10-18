@@ -9,7 +9,6 @@ from sqlalchemy import (
     DateTime,
     ForeignKey,
 )
-from sqlalchemy.orm import relationship
 from models.base import (
     BaseModel,
     Base,
@@ -37,9 +36,9 @@ class Book(BaseModel, Base):
         nullable=True
     )
 
-    owner_id = Column(
+    user_id = Column(
         String(40),
-        ForeignKey("users.id", ondelete="CASCADE"),
+        ForeignKey("users.id"),
         nullable=True
     )
 

@@ -17,7 +17,10 @@ user_data = {
 data = {"data": json.dumps(user_data)}
 
 response = requests.post("http://127.0.0.1:5000/api/users", data=user_data)
-user_folder = response.json()["folder"]
+try:
+    user_folder = response.json()["folder"]
+except Exception:
+    pass
 
 # upload book
 book_data = {
