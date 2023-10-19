@@ -25,7 +25,7 @@ def get_users():
 @app_views.route('/users', methods=['POST'], strict_slashes=False)
 def post_user():
     """ Creates a user """
-    data = request.get_json()
+    data = request.form.to_dict(flat=True)
     if not data:
         abort(400, 'Not a JSON')
     required = [

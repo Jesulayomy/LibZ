@@ -59,6 +59,7 @@ def post_book():
         if field not in book_data:
             abort(400, 'Missing {}'.format(field))
     book_data['size'] = size
+    book_data['user_id'] = current_user.id
     book = Book(**book_data)
     user_folder = current_user.folder
     more_data = manager.create_book(user_folder, file)

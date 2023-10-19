@@ -10,7 +10,7 @@ import jwt
 @auth.route('/login', methods=['POST'])
 def login():
     """ Logs in a user """
-    credentials = request.get_json()
+    credentials = request.form.to_dict()
     if not credentials:
         abort(400, 'Not a JSON')
     email = credentials.get('email')

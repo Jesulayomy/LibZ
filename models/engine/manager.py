@@ -132,6 +132,7 @@ class Manager:
             'driveName': file.get('name'),
             'iconLink': file.get('iconLink'),
             'size': int(file.get('size')),
+            'parents': parent,
         }
         return result
 
