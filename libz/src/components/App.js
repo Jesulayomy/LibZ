@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useState, useEffect, useContext } from 'react';
+import { useEffect, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../contexts/AuthContext';
 import Home from '../pages/Home';
@@ -18,6 +18,7 @@ function App() {
           withCredentials: true,
         });
         const user = res.data;
+        console.log(user);
         if (Object.keys(user).length > 0) login(user);
       } catch (err) {
         console.log(err);

@@ -9,7 +9,7 @@ header {
     margin-bottom: 30px;
 }
 
-header div {
+header .flex-div {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -17,15 +17,31 @@ header div {
     height: 100%;
 }
 
-header h1, header input, header img {
+.search-box {
+    width: 80%;
+    position: relative;
+}
+
+header h1, header img, .search-box {
     height: 80%;
 }
 
-header input {
+.search-box input {
     padding: 5px;
-    border-radius: 20px;
+    border-radius: 40px;
     border: none;
-    width: 75%;
+    width: 100%;
+    height: 100%;
+}
+
+.search-box button {
+    position: absolute;
+    top: 5px;
+    right: 0px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-size: 1.7rem;
 }
 
 header img {

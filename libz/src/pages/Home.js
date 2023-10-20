@@ -1,14 +1,33 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { RiFileUploadFill } from 'react-icons/ri';
+import axios from 'axios';
 import Card from '../components/Card';
 import TopUpload from '../components/TopUpload';
 import BookDetails from '../components/BookDetails';
 import BookUpload from '../components/BookUpload';
-import { mockBooks, mockTopBooks, mockUploaders } from '../mock';
+import { mockTopBooks, mockUploaders } from '../mock';
 import '../styles/Home.css';
 
 function Home() {
+  const [books, setBooks] = useState([]);
   const [bookDetails, setBookDetails] = useState(null);
   const [showUpload, setShowUpload] = useState(false);
+
+  useEffect(() => {
+    const getAllBooks = async () => {
+      try {
+        const res = await axios.get('http://localhost:5000/api/books', {
+          withCredentials: true,
+        });
+        setBooks(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    getAllBooks();
+  }, []);
+
   return (
     <div className='home'>
       <p className='sub-head'>
@@ -45,12 +64,12 @@ function Home() {
         </div>
       </div>
       <div className='card-container'>
-        {mockBooks.map((book, index) => (
+        {books.map((book) => (
           <Card
-            key={book.name + index}
+            key={book.id}
             name={book.name}
             author={book.author}
-            thumbnailLink={book.thumbnailLink}
+            thumbnailLink='https://picsum.photos/200/300'
             cardClass='norm-card'
             showDetails={() => setBookDetails(book)}
           />
@@ -64,7 +83,7 @@ function Home() {
             author={bookDetails.author}
             uploader={bookDetails.uploader}
             downloads={bookDetails.downloads}
-            thumbnailLink={bookDetails.thumbnailLink}
+            thumbnailLink='https://picsum.photos/200/300'
             downloadLink={bookDetails.downloadLink}
             close={() => setBookDetails(null)}
           />
@@ -76,7 +95,7 @@ function Home() {
         </div>
       )}
       <button className='upload-button' onClick={() => setShowUpload(true)}>
-        Upload Book
+        <RiFileUploadFill color='white' />
       </button>
     </div>
   );

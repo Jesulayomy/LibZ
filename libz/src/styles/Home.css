@@ -68,3 +68,19 @@
     background: rgba(0, 0, 0, 0.75);
     z-index: 1;
 }
+
+.upload-button {
+    background-color: #23b323;
+    border: none;
+    display: inline-block;
+    width: 65px;
+    height: 40px;
+    border-radius: 20px;
+    text-align: center;
+    line-height: 45px;
+    font-size: 1.8rem;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    cursor: pointer;
+}

@@ -18,6 +18,11 @@ app.config['SECRET_KEY'] = environ.get('SECRET_KEY')
 
 login_manager = LoginManager(app)
 
+CORS(
+    auth,
+    resources={r"/*": {"origins": "*"}},
+    supports_credentials=True)
+
 app.register_blueprint(app_views)
 app.register_blueprint(auth)
 

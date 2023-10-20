@@ -1,23 +1,94 @@
+import { useState } from 'react';
+import { AiOutlineClose } from 'react-icons/ai';
+import axios from 'axios';
 import '../styles/BookUpload.css';
 
 function BookUpload({ close }) {
+  const [uploadData, setUploadData] = useState({
+    name: '',
+    author: '',
+    description: '',
+  });
+  const [isPublic, setIsPublic] = useState(false);
+  const [file, setFile] = useState(null);
+
+  const handleFormChange = (e) => {
+    const { name, value } = e.target;
+    setUploadData((previousUploadData) => ({
+      ...previousUploadData,
+      [name]: value,
+    }));
+  };
+
+  const uploadBook = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append('name', uploadData.name);
+    formData.append('author', uploadData.author);
+    formData.append('description', uploadData.description);
+    formData.append('public', isPublic);
+    formData.append('book_file', file);
+    try {
+      const res = await axios.post(
+        'http://localhost:5000/api/books/',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+        { withCredentials: true }
+      );
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className='book-upload'>
       <button onClick={close} className='close-button'>
-        Close
+        <AiOutlineClose />
       </button>
       <p>Upload a book</p>
-      <form>
-        <input type='text' name='title' placeholder='Title' />
+      <form onSubmit={uploadBook}>
+        <input
+          type='text'
+          name='name'
+          placeholder='Title'
+          value={uploadData.name}
+          onChange={handleFormChange}
+        />
         <br />
-        <input type='text' name='author' placeholder='Author' />
+        <input
+          type='text'
+          name='author'
+          placeholder='Author'
+          value={uploadData.author}
+          onChange={handleFormChange}
+        />
         <br />
-        <input type='text' name='description' placeholder='Describe the book' />
+        <label htmlFor='public'>Public</label>
+        <input
+          type='checkbox'
+          id='public'
+          checked={isPublic}
+          name='public'
+          onChange={(e) => setIsPublic(e.target.checked)}
+        />
         <br />
-        <label for='isPublic'>Public</label>
-        <input type='checkbox' name='isPublic' />
+        <textarea
+          name='description'
+          placeholder='Description'
+          value={uploadData.description}
+          onChange={handleFormChange}
+        />
         <br />
-        <input type='file' name='file' />
+        <input
+          type='file'
+          name='book_file'
+          onChange={(e) => setFile(e.target.files[0])}
+        />
         <br />
         <input type='submit' value='Upload' />
       </form>

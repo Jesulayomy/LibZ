@@ -20,13 +20,22 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append('email', credentials.email);
+    formData.append('password', credentials.password);
     try {
       const res = await axios.post(
         'http://localhost:5000/auth/login',
-        credentials,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
         { withCredentials: true }
       );
       const user = res.data;
+      console.log(user);
       login(user);
     } catch (err) {
       console.log(err);

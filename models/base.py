@@ -58,5 +58,9 @@ class BaseModel:
             del self_dict["password"]
         if "_sa_instance_state" in self_dict:
             del self_dict["_sa_instance_state"]
+        if "user_id" in self_dict:
+            from models import storage
+            user = storage.get("User", self_dict["user_id"])
+            self_dict["uploader"] = user.display_name
 
         return self_dict

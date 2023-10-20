@@ -1,3 +1,5 @@
+import { BiDownload } from 'react-icons/bi';
+import { AiOutlineClose } from 'react-icons/ai';
 import '../styles/BookDetails.css';
 
 function BookDetails({
@@ -13,19 +15,17 @@ function BookDetails({
   return (
     <div className='book-details'>
       <button onClick={close} className='close-button'>
-        Close
+        <AiOutlineClose color='white' />
       </button>
-      <div className='book-details-img'>
-        <img src={thumbnailLink} alt={name} />
-      </div>
+      <img src={thumbnailLink} alt={name} />
       <div className='book-details-body'>
         <p className='name'>{name}</p>
         <p className='description'>{description}</p>
         <p>Author: {author}</p>
         <p>Uploaded by: {uploader}</p>
         <p>Downloads: {downloads}</p>
-        <a href={downloadLink} target='_blank' rel='noreferrer'>
-          <button>Download</button>
+        <a href={downloadLink} rel='noreferrer'>
+          <BiDownload color='white' />
         </a>
       </div>
     </div>
