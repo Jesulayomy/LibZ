@@ -1,13 +1,13 @@
 """ This module contains routes for authentication """
-from api.auths import auth
-from models import storage
+from hashlib import md5
 from flask import current_app, make_response, jsonify, request, abort
 from flask_login import current_user, login_user, logout_user, login_required
-from hashlib import md5
 import jwt
+from api.auths import auth
+from models import storage
 
 
-@auth.route('/login', methods=['POST'])
+@auth.route('/login', methods=['POST'], strict_slashes=False)
 def login():
     """ Logs in a user """
     credentials = request.form.to_dict()
@@ -35,7 +35,7 @@ def login():
     return response
 
 
-@auth.route('/logout', methods=['POST'])
+@auth.route('/logout', methods=['POST'], strict_slashes=False)
 @login_required
 def logout():
     """ Logs out a user """
@@ -45,7 +45,7 @@ def logout():
     return response
 
 
-@auth.route('/current_user', methods=['GET'])
+@auth.route('/current_user', methods=['GET'], strict_slashes=False)
 def get_current_user():
     """ gets the current authenticated user """
     if current_user.is_authenticated:

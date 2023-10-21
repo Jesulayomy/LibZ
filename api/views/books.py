@@ -8,7 +8,6 @@ from flask import (
 from flask_login import login_required, current_user
 from models import storage
 from models import manager
-from models.user import User
 from models.book import Book
 
 
@@ -57,7 +56,7 @@ def post_book():
             elif book_data[field].lower() == 'false':
                 book_data[field] = False
         if field not in book_data:
-            abort(400, 'Missing {}'.format(field))
+            abort(400, f'Missing {field}')
     book_data['size'] = size
     book_data['user_id'] = current_user.id
     book = Book(**book_data)
@@ -71,6 +70,7 @@ def post_book():
 
 @app_views.route('/books/<book_id>', methods=['GET'], strict_slashes=False)
 def get_book(book_id):
+    """ Retrieves the book with that book_id """
     book = storage.get('Book', book_id)
     if book:
         return jsonify(book.to_dict())
@@ -79,6 +79,7 @@ def get_book(book_id):
 
 @app_views.route('/books/<book_id>', methods=['DELETE'], strict_slashes=False)
 def delete_book(book_id):
+    """ Deletes the book with that book_id """
     book = storage.get('Book', book_id)
     if book:
         manager.delete_book(book.driveId)
@@ -86,8 +87,10 @@ def delete_book(book_id):
         return jsonify({}), 200
     abort(404)
 
+
 @app_views.route('/books/<book_id>', methods=['PUT'], strict_slashes=False)
 def put_book(book_id):
+    """ Updates the book with that book_id """
     book = storage.get('Book', book_id)
     if not book:
         abort(404)
@@ -98,3 +101,11 @@ def put_book(book_id):
         setattr(book, key, value)
     storage.add(book)
     return jsonify(book.to_dict()), 200
+
+
+@app_views.route('/books/top', methods=['GET'], strict_slashes=False)
+def get_top_books():
+    """ Returns the top n books """
+    n = request.args.get('n', 5)
+    books = storage.top('Book', n)
+    return jsonify([book.to_dict() for book in books])

@@ -1,8 +1,6 @@
 """ This module contains the flask app """
-from models import storage
-from api.views import app_views
-from api.auths import auth
 from os import environ
+from dotenv.main import load_dotenv
 from flask import (
     Flask,
     make_response,
@@ -10,7 +8,9 @@ from flask import (
 )
 from flask_cors import CORS
 from flask_login import LoginManager
-from dotenv.main import load_dotenv
+from models import storage
+from api.views import app_views
+from api.auths import auth
 
 
 app = Flask(__name__)
@@ -52,9 +52,8 @@ def not_found(err):
 
 
 if __name__ == '__main__':
-    """ Runs the app with the environment variables """
     load_dotenv()
     app.run(
         host='0.0.0.0',
-        port=environ.get('DB_DEV_PORT', default='5000'),
+        port=environ.get('PUBLIB_PORT', default='5000'),
         threaded=True)

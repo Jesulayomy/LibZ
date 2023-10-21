@@ -11,7 +11,6 @@ from flask_login import login_user
 from models import storage
 from models import manager
 from models.user import User
-from models.book import Book
 import jwt
 
 
@@ -37,7 +36,7 @@ def post_user():
     ]
     for r in required:
         if r not in data:
-            abort(400, 'Missing {}'.format(r))
+            abort(400, f'Missing {r}')
     existing_user = storage.lookup(email=data['email'])
     if existing_user:
         abort(409, 'User with email already exists')
@@ -97,7 +96,10 @@ def delete_user(user_id):
     abort(404)
 
 
-@app_views.route('/users/<user_id>/books', methods=['GET'], strict_slashes=False)
+@app_views.route(
+        '/users/<user_id>/books',
+        methods=['GET'],
+        strict_slashes=False)
 def get_user_books(user_id):
     """ Returns all books from a user """
     user = storage.get('User', user_id)
@@ -107,3 +109,11 @@ def get_user_books(user_id):
         user = session.merge(user)
         books = [book.to_dict() for book in user.books]
     return jsonify(books)
+
+
+@app_views.route('/users/top', methods=['GET'], strict_slashes=False)
+def get_top_users():
+    """ Returns the top n users """
+    n = request.form.get('n', 3)
+    users = storage.top('User', n)
+    return jsonify([user.to_dict() for user in users])
