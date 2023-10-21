@@ -1,31 +1,48 @@
-import requests
+""" This module uploads some models to the database """
 import os
-import json
+import requests
 
 names = [
-    "Atreus", "Athena", "Ares", "Aphrodite", "Apollo", "Artemis", "Achilles", "Ariadne", "Aeneas", "Aether",
-    "Ban", "Bai", "Bao", "Bing", "Bo", "Cai", "Cao", "Chang", "Chao", "Chen", "Cheng", "Chin", "Chou", "Chu",
-    "Delilah", "Dorothy", "Daphne", "Diana", "Doris", "Fiona", "Faye", "Faith", "Felicity", "Fern", "Flora",
-    "John", "Jane", "Jack", "Jill", "James", "Jenny", "Jade", "Jasper", "Jasmine", "Jared", "Jocelyn", "Jude",
-    "Emma", "Ethan", "Emily", "Elijah", "Elizabeth", "Evan", "Eva", "Eliana", "Ezra", "Elena", "Elias", "Eleanor",
-    "Griamore", "Gowther", "Gilthunder", "Gustaf", "Gannon", "Gareth", "Gavin", "Gawain", "Galahad", "Galahalt",
-    "Hannah", "Haley", "Hazel", "Heather", "Helen", "Holly", "Hope", "Harmony", "Haven", "Honor", "Hermione",
-    "Indra", "Iris", "Ivy", "Isabella", "Isaac", "Ian", "Irene", "Iris", "Ivy", "Isabella", "Isaac", "Ian", "Irene",
+    "Atreus", "Athena", "Ares", "Aphrodite", "Apollo", "Artemis",
+    "Achilles", "Ariadne", "Aeneas", "Aether",
+    "Ban", "Bai", "Bao", "Bing", "Bo", "Cai", "Cao",
+    "Chang", "Chao", "Chen", "Cheng", "Chin", "Chou", "Chu",
+    "Delilah", "Dorothy", "Daphne", "Diana", "Doris", "Fiona",
+    "Faye", "Faith", "Felicity", "Fern", "Flora",
+    "John", "Jane", "Jack", "Jill", "James", "Jenny", "Jade",
+    "Jasper", "Jasmine", "Jared", "Jocelyn", "Jude",
+    "Emma", "Ethan", "Emily", "Elijah", "Elizabeth", "Evan",
+    "Eva", "Eliana", "Ezra", "Elena", "Elias", "Eleanor",
+    "Griamore", "Gowther", "Gilthunder", "Gustaf", "Gannon",
+    "Gareth", "Gavin", "Gawain", "Galahad", "Galahalt",
+    "Hannah", "Haley", "Hazel", "Heather", "Helen", "Holly",
+    "Hope", "Harmony", "Haven", "Honor", "Hermione",
+    "Indra", "Iris", "Ivy", "Isabella", "Isaac", "Ian",
+    "Irene", "Iris", "Ivy", "Isabella", "Isaac", "Ian", "Irene",
 ]
 
 surnames = [
-    "Kane", "Kang", "Kao", "Kato", "Kawaguchi", "Kawamoto", "Kawamura", "Kawano", "Kawasaki", "Kawashima",
-    "Loyd", "Matthew", "Morgan", "Morrison", "Moss", "Mullins", "Munoz", "Murphy", "Murray", "Myers", "Nash",
-    "Nelson", "Newman", "Newton", "Nguyen", "Nichols", "Nicholson", "Nielsen", "Nieves", "Nixon", "Noble",
-    "Ochoa", "Oconnor", "Odom", "Oliver", "Olsen", "Olson", "Oneal", "Oneill", "Orr", "Ortega", "Ortiz", "Osborn",
-    "Owen", "Owens", "Pace", "Pacheco", "Padilla", "Page", "Palmer", "Park", "Parker", "Parks", "Parrish", "Parsons",
-    "Quinn", "Ramirez", "Ramos", "Ramsey", "Randall", "Randolph", "Rasmussen", "Ratliff", "Ray", "Raymond", "Reed",
-    "Santana", "Santiago", "Santos", "Sargent", "Saunders", "Savage", "Sawyer", "Schmidt", "Schneider", "Schroeder",
-    "Tanner", "Taylor", "Terrell", "Terry", "Thomas", "Thompson", "Thornton", "Tillman", "Todd", "Torres", "Townsend",
-    "Underwood", "Valdez", "Valencia", "Valentine", "Valenzuela", "Vance", 
+    "Kane", "Kang", "Kao", "Kato", "Kawaguchi", "Kawamoto",
+    "Kawamura", "Kawano", "Kawasaki", "Kawashima",
+    "Loyd", "Matthew", "Morgan", "Morrison", "Moss",
+    "Mullins", "Munoz", "Murphy", "Murray", "Myers", "Nash",
+    "Nelson", "Newman", "Newton", "Nguyen", "Nichols",
+    "Nicholson", "Nielsen", "Nieves", "Nixon", "Noble",
+    "Ochoa", "Oconnor", "Odom", "Oliver", "Olsen", "Olson",
+    "Oneal", "Oneill", "Orr", "Ortega", "Ortiz", "Osborn",
+    "Owen", "Owens", "Pace", "Pacheco", "Padilla", "Page",
+    "Palmer", "Park", "Parker", "Parks", "Parrish", "Parsons",
+    "Quinn", "Ramirez", "Ramos", "Ramsey", "Randall", "Randolph",
+    "Rasmussen", "Ratliff", "Ray", "Raymond", "Reed",
+    "Santana", "Santiago", "Santos", "Sargent", "Saunders",
+    "Savage", "Sawyer", "Schmidt", "Schneider", "Schroeder",
+    "Tanner", "Taylor", "Terrell", "Terry", "Thomas",
+    "Thompson", "Thornton", "Tillman", "Todd", "Torres", "Townsend",
+    "Underwood", "Valdez", "Valencia", "Valentine",
+    "Valenzuela", "Vance",
 ]
 
-bookNames = [
+book_names = [
     "To Kill a Mockingbird",
     "1984",
     "The Great Gatsby",
@@ -127,7 +144,7 @@ PHONE = 2341234567890
 
 def create_user(pos: int) -> dict:
     """ Creates a user dict for upload """
-    user_data ={
+    user_data = {
         "first_name": names[pos],
         "last_name": surnames[pos],
         "email": f"{names[pos]}{surnames[pos]}@gmail.com",
@@ -140,14 +157,14 @@ def create_user(pos: int) -> dict:
     return user_data
 
 
-def create_book(pos: int, user_folder: str) -> dict:
+def create_book(pos: int, user_pos: int, user_folder: str) -> dict:
     """ creates the book's Dict for upload """
     book_data = {
-        "name": bookNames[pos],
-        "author": f"{surnames[pos]}",
+        "name": book_names[pos],
+        "author": f"{surnames[user_pos]}",
         "public": True,
         "user_folder": user_folder,
-        "description": f"This is a description for {bookNames[pos]} uploaded by {names[pos]}{pos}",
+        "description": f"This is a description for {book_names[pos]} uploaded by {names[user_pos]}{user_pos}",
     }
     return book_data
 
@@ -163,34 +180,40 @@ def post_user(pos: int = 0, session: requests.Session = None):
     return response.json()
 
 
-def post_book(pos: int = 0, user_folder: str = "", session: requests.Session = None):
+def post_book(
+        book_pos: int = 0,
+        user_pos: int = 0,
+        user_folder: str = "",
+        session: requests.Session = None):
     """ creates a book through the post request """
-    book_data = create_book(pos, user_folder)
-    book = "Bird.pdf" if (pos + 2) % 2 == 0 else "1984.pdf"
+    book_data = create_book(book_pos, user_pos, user_folder)
+    book = "Bird.pdf" if (book_pos + 2) % 2 == 0 else "1984.pdf"
     file_path = os.path.join(os.getcwd(), book)
+    book_name = book_names[book_pos].replace(" ", "")
 
-    
     with open(file_path, "rb") as book_file:
-        files = {"book_file": (book, book_file)}
-        response = session.post(f"http://127.0.0.1:5000/api/books", data=book_data, files=files)
+        files = {"book_file": (book_name + ".pdf", book_file)}
+        response = session.post("http://127.0.0.1:5000/api/books", data=book_data, files=files)
 
     return response.json()
 
 
 def populate():
     """ Populates the database """
-    num = int(input("How many users do you want to create? "))
-    resp = requests.get("http://127.0.0.1:5000/api/status")
+    usrs = int(input("How many users do you want to create? "))
+    bks = int(input("How many books do you want to create for each user? "))
+    resp = requests.get("http://127.0.0.1:5000/api/status", timeout=60)
     print(resp.json())
-    resp = requests.get("http://127.0.0.1:5000/api/stats")
+    resp = requests.get("http://127.0.0.1:5000/api/stats", timeout=60)
     print(resp.json())
-    for pos in range(0, num):
+    for user_pos in range(0, usrs):
         with requests.Session() as session:
-            user_data = post_user(pos, session)
-            book_data = post_book(pos, user_data["folder"], session)
-            print(f"{user_data['display_name']} successfully posted {book_data['name']}")
+            user_data = post_user(user_pos, session)
+            for idx in range(user_pos * bks, (user_pos + 1) * bks):
+                book_data = post_book(idx, user_pos, user_data["folder"], session)
+                print(f"{user_data['display_name']} successfully posted {book_data['name']}")
 
-    resp = requests.get("http://127.0.0.1:5000/api/stats")
+    resp = requests.get("http://127.0.0.1:5000/api/stats", timeout=60)
     print(resp.json())
 
 

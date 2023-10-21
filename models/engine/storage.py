@@ -2,7 +2,11 @@
 from contextlib import contextmanager
 from dotenv.main import load_dotenv
 from os import environ
-from sqlalchemy import create_engine
+from sqlalchemy import (
+    create_engine,
+    event,
+    text,
+)
 from sqlalchemy.orm import (
     sessionmaker,
     scoped_session,
@@ -19,6 +23,14 @@ from models.user import User
 
 
 load_dotenv()
+
+@event.listens_for(Book, "after_insert")
+def update_user_uploads(mapper, connection, target):
+    """ Updates the user's uploads """
+    statement = text(
+        "UPDATE users SET uploads = uploads + 1 WHERE id = '{}'".format(
+            target.user_id))
+    connection.execute(statement)
 
 
 class Storage:
@@ -111,6 +123,21 @@ class Storage:
                 obj = None
 
         return obj
+
+    def top(self, cls: Union[str, Type[User], Type[Book]], n: int) -> list:
+        """ gets the top n users by uploads or books by downloads """
+        if type(cls) is str:
+            cls = eval(cls)
+
+        with self.session_scope() as session:
+            if cls == User:
+                query = session.query(
+                    User).order_by(User.uploads.desc()).limit(n).all()
+            elif cls == Book:
+                query = session.query(
+                    Book).order_by(Book.downloads.desc()).limit(n).all()
+
+        return query
 
     def lookup(self, email: str) -> Union[User, None]:
         """ Gets a user by email """

@@ -5,6 +5,7 @@ from hashlib import md5
 from sqlalchemy import (
     String,
     Column,
+    Integer,
     DateTime,
 )
 from sqlalchemy.orm import relationship
@@ -61,6 +62,12 @@ class User(BaseModel, UserMixin, Base):
     password = Column(
         String(64),
         nullable=False
+    )
+
+    uploads = Column(
+        Integer,
+        nullable=False,
+        default=0
     )
 
     books = relationship(
