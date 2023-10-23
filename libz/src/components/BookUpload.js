@@ -20,6 +20,16 @@ function BookUpload({ close }) {
     }));
   };
 
+  const clearForm = () => {
+    setUploadData({
+      name: '',
+      author: '',
+      description: '',
+    });
+    setIsPublic(false);
+    setFile(null);
+  };
+
   const uploadBook = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -42,6 +52,8 @@ function BookUpload({ close }) {
       console.log(res);
     } catch (err) {
       console.log(err);
+    } finally {
+      clearForm();
     }
   };
 

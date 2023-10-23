@@ -2,10 +2,10 @@ import { Outlet } from 'react-router-dom';
 import Header from '../components/Header';
 import '../styles/Layout.css';
 
-function Layout() {
+function Layout({ setShowLogin }) {
   return (
     <>
-      <Header />
+      <Header setShowLogin={setShowLogin} />
       <Outlet />
     </>
   );

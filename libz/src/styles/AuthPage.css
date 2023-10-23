@@ -1,0 +1,71 @@
+.select-login {
+    border: none;
+    border-radius: 30px;
+    background-color: #e3e5d99c;
+    display: flex;
+    font-size: 1.4rem;
+    width: 40%;
+    padding: 2px;
+    position: absolute;
+    top: 2%;
+    left: 30%;
+}
+
+.select-login div {
+    width: 50%;
+    text-align: center;
+    border: none;
+    border-radius: 30px;
+    padding: 7px;
+    cursor: pointer;
+}
+
+.select-login .current {
+    background-color: #5b5b5838;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    border: 2px solid #806517;
+    border-radius: 20px;
+    position: relative;
+    width: 40%;
+    height: 90%;
+    background-color: #f3f9d2;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-form form {
+    width: 60%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.login-form form input, .login-form form select {
+    border: none;
+    border-radius: 30px;
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 10px;
+    outline: none;
+    font-size: 1.2rem;
+    font-family: 'Sanchez', serif;
+    background-color: #e3e5d99c;
+}
+
+.login-form form input[type='date'], .login-form form select {
+    width: 49%;
+}
+
+.login-form form input[type='submit'] {
+    background-color: #23b323;
+    color: white;
+    cursor: pointer;
+}
+
+.login-form form input[type='submit']:hover {
+    background-color: #18be18;
+}

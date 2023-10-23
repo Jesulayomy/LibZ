@@ -106,6 +106,6 @@ def put_book(book_id):
 @app_views.route('/books/top', methods=['GET'], strict_slashes=False)
 def get_top_books():
     """ Returns the top n books """
-    n = request.args.get('n', 5)
+    n = request.args.get('n', 4)
     books = storage.top('Book', n)
     return jsonify([book.to_dict() for book in books])

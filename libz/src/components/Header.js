@@ -1,7 +1,7 @@
 import { IoIosSearch } from 'react-icons/io';
 import '../styles/Header.css';
 
-function Header() {
+function Header({ setShowLogin }) {
   return (
     <header>
       <h1>LibZ</h1>
@@ -12,7 +12,11 @@ function Header() {
             <IoIosSearch />
           </button>
         </div>
-        <img src='https://picsum.photos/200' alt='Profile' />
+        <img
+          src='https://picsum.photos/200'
+          alt='Profile'
+          onClick={() => setShowLogin(true)}
+        />
       </div>
     </header>
   );

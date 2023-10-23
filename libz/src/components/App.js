@@ -1,14 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../contexts/AuthContext';
 import Home from '../pages/Home';
-import Login from '../pages/Login';
 import Layout from '../pages/Layout';
 
 function App() {
   const { login } = useContext(AuthContext);
+  const [showLogin, setShowLogin] = useState(false);
   // const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -30,9 +30,11 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path='login' element={<Login />} />
+        <Route path='/' element={<Layout setShowLogin={setShowLogin} />}>
+          <Route
+            index
+            element={<Home showLogin={showLogin} setShowLogin={setShowLogin} />}
+          />
         </Route>
       </Routes>
     </BrowserRouter>

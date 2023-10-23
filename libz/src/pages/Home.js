@@ -5,11 +5,13 @@ import Card from '../components/Card';
 import TopUpload from '../components/TopUpload';
 import BookDetails from '../components/BookDetails';
 import BookUpload from '../components/BookUpload';
-import { mockTopBooks, mockUploaders } from '../mock';
+import AuthPage from '../components/AuthPage';
 import '../styles/Home.css';
 
-function Home() {
+function Home({ showLogin, setShowLogin }) {
   const [books, setBooks] = useState([]);
+  const [topBooks, setTopBooks] = useState([]);
+  const [topUploaders, setTopUploaders] = useState([]);
   const [bookDetails, setBookDetails] = useState(null);
   const [showUpload, setShowUpload] = useState(false);
 
@@ -25,7 +27,32 @@ function Home() {
       }
     };
 
+    const getTopBooks = async () => {
+      try {
+        const res = await axios.get('http://localhost:5000/api/books/top', {
+          withCredentials: true,
+        });
+        setTopBooks(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    const getTopUploaders = async () => {
+      try {
+        const res = await axios.get('http://localhost:5000/api/users/top', {
+          withCredentials: true,
+        });
+        setTopUploaders(res.data);
+        console.log(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
     getAllBooks();
+    getTopBooks();
+    getTopUploaders();
   }, []);
 
   return (
@@ -37,12 +64,12 @@ function Home() {
         <div className='top-downloads'>
           <h2>Top downloads</h2>
           <div className='top-downloads-in'>
-            {mockTopBooks.map((book, index) => (
+            {topBooks.map((book) => (
               <Card
-                key={book.name + index}
+                key={book.id}
                 name={book.name}
                 author={book.author}
-                thumbnailLink={book.thumbnailLink}
+                thumbnailLink='https://picsum.photos/200/300'
                 cardClass='top-card'
                 showDetails={() => setBookDetails(book)}
               />
@@ -52,10 +79,10 @@ function Home() {
         <div className='top-uploaders'>
           <h2>Top uploaders</h2>
           <div className='top-uploaders-in'>
-            {mockUploaders.map((uploader, index) => (
+            {topUploaders.map((uploader) => (
               <TopUpload
-                key={uploader.displayName + index}
-                avatarUrl={uploader.avatarUrl}
+                key={uploader.id}
+                avatarUrl='https://picsum.photos/200/300'
                 displayName={uploader.displayName}
                 downloads={uploader.downloads}
               />
@@ -92,6 +119,11 @@ function Home() {
       {showUpload && (
         <div className='modal'>
           <BookUpload close={() => setShowUpload(false)} />
+        </div>
+      )}
+      {showLogin && (
+        <div className='modal'>
+          <AuthPage close={() => setShowLogin(false)} />
         </div>
       )}
       <button className='upload-button' onClick={() => setShowUpload(true)}>

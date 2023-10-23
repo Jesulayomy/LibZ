@@ -1,10 +1,9 @@
 import { useContext, useState } from 'react';
 import axios from 'axios';
-import { Navigate } from 'react-router';
 import { AuthContext } from '../contexts/AuthContext';
 
 function Login() {
-  const { isLoggedIn, login } = useContext(AuthContext);
+  const { login } = useContext(AuthContext);
   const [credentials, setCredentials] = useState({
     email: '',
     password: '',
@@ -42,30 +41,26 @@ function Login() {
     }
   };
 
-  return isLoggedIn ? (
-    <Navigate replace to='/' />
-  ) : (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <input
-          type='email'
-          name='email'
-          value={credentials.email}
-          placeholder='Email'
-          onChange={handleChange}
-        />
-        <br />
-        <input
-          type='password'
-          name='password'
-          value={credentials.password}
-          placeholder='Password'
-          onChange={handleChange}
-        />
-        <br />
-        <button type='submit'>Login</button>
-      </form>
-    </div>
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        type='email'
+        name='email'
+        value={credentials.email}
+        placeholder='Enter Email'
+        onChange={handleChange}
+      />
+      <br />
+      <input
+        type='password'
+        name='password'
+        value={credentials.password}
+        placeholder='Enter Password'
+        onChange={handleChange}
+      />
+      <br />
+      <input type='submit' value='Login' />
+    </form>
   );
 }
 

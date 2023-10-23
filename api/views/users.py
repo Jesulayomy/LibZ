@@ -114,6 +114,6 @@ def get_user_books(user_id):
 @app_views.route('/users/top', methods=['GET'], strict_slashes=False)
 def get_top_users():
     """ Returns the top n users """
-    n = request.form.get('n', 3)
+    n = request.args.get('n', 3)
     users = storage.top('User', n)
     return jsonify([user.to_dict() for user in users])
