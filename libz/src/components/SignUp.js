@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../contexts/AuthContext';
 
-function SignUp() {
+function SignUp({ close }) {
   const { login } = useContext(AuthContext);
   const [userData, setUserData] = useState({
     first_name: '',
@@ -33,6 +33,7 @@ function SignUp() {
     try {
       const res = await axios.post('http://localhost:5000/api/users', formData);
       const user = res.data;
+      close();
       login(user);
     } catch (error) {
       console.log(error);
@@ -88,7 +89,7 @@ function SignUp() {
       />
       <br />
       <input
-        type='number'
+        type='tel'
         name='phone'
         placeholder='Enter Phone Number'
         value={userData.phone}

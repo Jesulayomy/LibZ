@@ -1,15 +1,11 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
-import { AuthContext } from '../contexts/AuthContext';
 import Login from './Login';
 import SignUp from './SignUp';
 import '../styles/AuthPage.css';
 
 function AuthPage({ close }) {
-  const { isLoggedIn } = useContext(AuthContext);
   const [isSigningUp, setIsSigningUp] = useState(false);
-
-  if (isLoggedIn) close();
 
   return (
     <div className='login-form'>
@@ -30,7 +26,7 @@ function AuthPage({ close }) {
           Login
         </div>
       </div>
-      {isSigningUp ? <SignUp /> : <Login />}
+      {isSigningUp ? <SignUp close={close} /> : <Login close={close} />}
     </div>
   );
 }

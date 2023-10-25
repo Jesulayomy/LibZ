@@ -5,9 +5,10 @@ import axios from 'axios';
 import { AuthContext } from '../contexts/AuthContext';
 import Home from '../pages/Home';
 import Layout from '../pages/Layout';
+import Profile from '../pages/Profile';
 
 function App() {
-  const { login } = useContext(AuthContext);
+  const { login, user } = useContext(AuthContext);
   const [showLogin, setShowLogin] = useState(false);
   // const [loading, setLoading] = useState(true);
 
@@ -35,6 +36,7 @@ function App() {
             index
             element={<Home showLogin={showLogin} setShowLogin={setShowLogin} />}
           />
+          <Route path='profile' element={<Profile user={user} />} />
         </Route>
       </Routes>
     </BrowserRouter>

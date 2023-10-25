@@ -44,7 +44,6 @@ function Home({ showLogin, setShowLogin }) {
           withCredentials: true,
         });
         setTopUploaders(res.data);
-        console.log(res.data);
       } catch (err) {
         console.log(err);
       }

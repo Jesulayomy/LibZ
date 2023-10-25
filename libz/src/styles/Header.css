@@ -22,7 +22,7 @@ header .flex-div {
     position: relative;
 }
 
-header h1, header img, .search-box {
+header h1, header img, header .search-box {
     height: 80%;
 }
 

@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../contexts/AuthContext';
 
-function Login() {
+function Login({ close }) {
   const { login } = useContext(AuthContext);
   const [credentials, setCredentials] = useState({
     email: '',
@@ -34,7 +34,7 @@ function Login() {
         { withCredentials: true }
       );
       const user = res.data;
-      console.log(user);
+      close();
       login(user);
     } catch (err) {
       console.log(err);

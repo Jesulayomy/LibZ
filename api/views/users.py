@@ -69,7 +69,7 @@ def put_user(user_id):
     user = storage.get('User', user_id)
     if not user:
         abort(404)
-    data = request.get_json()
+    data = request.form.to_dict(flat=True)
     if not data:
         abort(400, 'Not a JSON')
     ignore = [
