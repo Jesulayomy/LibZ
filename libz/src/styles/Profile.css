@@ -122,6 +122,8 @@ div.logout {
     bottom: 20px;
     right: 10px;
     color: white;
+    cursor: pointer;
+    border-radius: 30px;
     background-color: #b32323;
 }
 
@@ -133,8 +135,14 @@ div.logout {
     align-items: center;
 }
 
+.profile-books .search-box {
+    width: 50%;
+    height: 40px;
+    margin-bottom: 20px;
+}
+
 .profile-books .profile-books-list {
-    width: 80%;
+    width: 75%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -146,31 +154,32 @@ div.logout {
     height: 250px;
     margin-bottom: 20px;
     border: 2px solid #c33149;
-    border-radius: 30px;
+    border-radius: 15px;
     display: flex;
     flex-wrap: wrap;
     align-items: space-between;
+    position: relative;
 }
 
 .profile-books .book-card .header {
     width: 100%;
-    height: 55%;
+    height: 60%;
     display: flex;
     justify-content: space-between;
 }
 
 .book-card .header img {
-    width: 40%;
-    border-radius: 30px;
+    width: 45%;
+    border-radius: 15px;
 }
 
 .book-card .header div {
-    width: 57%;
+    width: 53%;
     margin-top: 7px;
 }
 
 .book-card-details {
-    width: 80%;
+    width: 70%;
     display: flex;
     justify-content: space-between;
 }
@@ -178,4 +187,40 @@ div.logout {
 .book-card-details .title {
     padding: 5px;
     font-size: 1.3rem;
+}
+
+.book-card-details .details p {
+    white-space: nowrap;
+}
+
+.book-card .actions {
+    width: 11%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    right: 10px;
+    bottom:5px;
+}
+
+.book-card .actions a, .book-card .actions button {
+    width: 85%;
+    height: 25px;
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+    border-radius: 25px;
+    color: white;
+    padding: 0;
+    cursor: pointer;
+}
+
+.book-card .actions a {
+    background-color: #23b323;
+}
+
+.book-card .actions button {
+    background-color: #b32323;
+    border: none;
 }

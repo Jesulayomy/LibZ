@@ -7,7 +7,7 @@ function Card({ name, author, thumbnailLink, cardClass, showDetails }) {
       <div className='card-body'>
         <p className='name'>{name}</p>
         <p className='author'>By {author}</p>
-        <div className='button' onClick={showDetails}>
+        <div className='details-button' onClick={showDetails}>
           <div></div>
           <div></div>
           <div></div>

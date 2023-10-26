@@ -162,6 +162,27 @@ class Storage:
                 count += session.query(Book).count()
                 return count
 
+    def search(self, cls: Union[str, Type[User], Type[Book]], query: str) -> list:
+        """ Searches for a book by title or author """
+
+        if type(cls) is str:
+            cls = eval(cls)
+
+        with self.session_scope() as session:
+            if cls == Book:
+                query = session.query(
+                    Book).filter(
+                    Book.name.like(
+                        '%{}%'.format(
+                            query))).all()
+            elif cls == User:
+                query = session.query(
+                    User).filter(
+                    User.name.like(
+                        '%{}%'.format(
+                            query))).all()
+        return query
+
     def add(self, obj: Union[User, Book], file=None) -> None:
         """ Adds an object to the current session """
 

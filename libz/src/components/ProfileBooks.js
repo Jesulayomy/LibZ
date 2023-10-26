@@ -22,14 +22,21 @@ function ProfileBooks({ user }) {
     getBooks();
   }, []);
 
-  console.log(books);
+  const deleteBook = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/books/${id}`);
+      setBooks(books.filter((book) => book.id !== id));
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className='profile-books'>
       <SearchBox />
       <div className='profile-books-list'>
         {books.map((book) => (
-          <ProfileBookCard key={book.id} book={book} />
+          <ProfileBookCard key={book.id} book={book} deleteBook={deleteBook} />
         ))}
       </div>
     </div>

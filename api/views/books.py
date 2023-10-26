@@ -109,3 +109,11 @@ def get_top_books():
     n = request.args.get('n', 4)
     books = storage.top('Book', n)
     return jsonify([book.to_dict() for book in books])
+
+
+@app_views.route('/books/search', methods=['GET'], strict_slashes=False)
+def search_books():
+    """ Returns the books that match the search """
+    query = request.args.get('q', '')
+    books = storage.search('Book', query)
+    return jsonify([book.to_dict() for book in books])

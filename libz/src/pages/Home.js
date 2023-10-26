@@ -8,7 +8,7 @@ import BookUpload from '../components/BookUpload';
 import AuthPage from '../components/AuthPage';
 import '../styles/Home.css';
 
-function Home({ showLogin, setShowLogin }) {
+function Home({ showLogin, setShowLogin, searchedBooks }) {
   const [books, setBooks] = useState([]);
   const [topBooks, setTopBooks] = useState([]);
   const [topUploaders, setTopUploaders] = useState([]);
@@ -82,24 +82,35 @@ function Home({ showLogin, setShowLogin }) {
               <TopUpload
                 key={uploader.id}
                 avatarUrl='https://picsum.photos/200/300'
-                displayName={uploader.displayName}
-                downloads={uploader.downloads}
+                displayName={uploader.display_name}
+                uploads={uploader.uploads}
               />
             ))}
           </div>
         </div>
       </div>
       <div className='card-container'>
-        {books.map((book) => (
-          <Card
-            key={book.id}
-            name={book.name}
-            author={book.author}
-            thumbnailLink='https://picsum.photos/200/300'
-            cardClass='norm-card'
-            showDetails={() => setBookDetails(book)}
-          />
-        ))}
+        {searchedBooks.length > 0
+          ? searchedBooks.map((book) => (
+              <Card
+                key={book.id}
+                name={book.name}
+                author={book.author}
+                thumbnailLink='https://picsum.photos/200/300'
+                cardClass='norm-card'
+                showDetails={() => setBookDetails(book)}
+              />
+            ))
+          : books.map((book) => (
+              <Card
+                key={book.id}
+                name={book.name}
+                author={book.author}
+                thumbnailLink='https://picsum.photos/200/300'
+                cardClass='norm-card'
+                showDetails={() => setBookDetails(book)}
+              />
+            ))}
       </div>
       {bookDetails && (
         <div className='modal'>

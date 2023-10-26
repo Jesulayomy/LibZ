@@ -12,7 +12,7 @@ header {
 header .flex-div {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
     width: 20%;
     height: 100%;
 }
@@ -20,10 +20,15 @@ header .flex-div {
 .search-box {
     width: 80%;
     position: relative;
+    margin-right: 10px;
 }
 
 header h1, header img, header .search-box {
     height: 80%;
+}
+
+header h1 {
+    cursor: pointer;
 }
 
 .search-box input {
