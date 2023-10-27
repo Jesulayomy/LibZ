@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import axios from 'axios';
+import axiosRequest from '../contexts/Axios';
 import { AuthContext } from '../contexts/AuthContext';
 
 function Login({ close }) {
@@ -22,8 +22,28 @@ function Login({ close }) {
     const formData = new FormData();
     formData.append('email', credentials.email);
     formData.append('password', credentials.password);
+
+    // axiosRequest
+    //   .post('http://127.0.0.1:5000/auth/login',
+    //   { withCredentials: true },
+    //   formData,
+    //   {
+    //     headers: {
+    //       'Content_type': 'multipart/form-data',
+    //     },
+    //   },
+    //   )
+    //   .then((res) => {
+    //     const user = res.data;
+    //     close();
+    //     login(user);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   })
+    // };
     try {
-      const res = await axios.post(
+      const res = await axiosRequest.post(
         'http://127.0.0.1:5000/auth/login',
         formData,
         {

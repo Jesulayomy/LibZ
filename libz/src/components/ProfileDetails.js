@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
-import axios from 'axios';
+import axiosRequest from '../contexts/Axios';
 
 function ProfileDetails({ user }) {
   const { login } = useContext(AuthContext);
@@ -26,7 +26,7 @@ function ProfileDetails({ user }) {
       if (updatedData[key]) formData.append(key, updatedData[key]);
     }
     try {
-      const res = await axios.put(
+      const res = await axiosRequest.put(
         `http://127.0.0.1:5000/api/users/${user.id}`,
         formData
       );

@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { useNavigate } from 'react-router';
-import axios from 'axios';
+import axiosRequest from '../contexts/Axios';
 import { BiLogOut } from 'react-icons/bi';
 import { AuthContext } from '../contexts/AuthContext';
 import ProfileDetails from '../components/ProfileDetails';
@@ -13,8 +13,9 @@ function Profile({ user }) {
 
   const handleLogout = async () => {
     try {
-      await axios.post('http://127.0.0.1:5000/auth/logout');
+      await axiosRequest.post('http://127.0.0.1:5000/auth/logout');
       logout();
+      navigate('/');
     } catch (error) {
       console.log(error);
     }

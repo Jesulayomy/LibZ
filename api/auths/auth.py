@@ -31,7 +31,7 @@ def login():
         current_app.config['SECRET_KEY'],
         algorithm='HS256')
     response = make_response(jsonify(user.to_dict()), 200)
-    response.set_cookie('token', token, httponly=False)
+    response.set_cookie('token', token, samesite='None', httponly=False, secure=True)
     return response
 
 
@@ -41,7 +41,7 @@ def logout():
     """ Logs out a user """
     logout_user()
     response = make_response(jsonify({}), 200)
-    response.delete_cookie('token')
+    response.delete_cookie('token', samesite='None', httponly=False, secure=True)
     return response
 
 

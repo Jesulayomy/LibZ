@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { RiFileUploadFill } from 'react-icons/ri';
-import axios from 'axios';
+import axiosRequest from '../contexts/Axios';
 import Card from '../components/Card';
 import TopUpload from '../components/TopUpload';
 import BookDetails from '../components/BookDetails';
@@ -18,7 +18,7 @@ function Home({ showLogin, setShowLogin, searchedBooks }) {
   useEffect(() => {
     const getAllBooks = async () => {
       try {
-        const res = await axios.get('http://127.0.0.1:5000/api/books', {
+        const res = await axiosRequest.get('http://127.0.0.1:5000/api/books', {
           withCredentials: true,
         });
         setBooks(res.data);
@@ -29,7 +29,7 @@ function Home({ showLogin, setShowLogin, searchedBooks }) {
 
     const getTopBooks = async () => {
       try {
-        const res = await axios.get('http://127.0.0.1:5000/api/books/top', {
+        const res = await axiosRequest.get('http://127.0.0.1:5000/api/books/top', {
           withCredentials: true,
         });
         setTopBooks(res.data);
@@ -40,7 +40,7 @@ function Home({ showLogin, setShowLogin, searchedBooks }) {
 
     const getTopUploaders = async () => {
       try {
-        const res = await axios.get('http://127.0.0.1:5000/api/users/top', {
+        const res = await axiosRequest.get('http://127.0.0.1:5000/api/users/top', {
           withCredentials: true,
         });
         setTopUploaders(res.data);

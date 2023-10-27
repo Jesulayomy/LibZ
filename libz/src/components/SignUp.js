@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import axios from 'axios';
+import axiosRequest from '../contexts/Axios';
 import { AuthContext } from '../contexts/AuthContext';
 
 function SignUp({ close }) {
@@ -31,7 +31,7 @@ function SignUp({ close }) {
       if (key !== 'confirmPassword') formData.append(key, userData[key]);
     }
     try {
-      const res = await axios.post('http://127.0.0.1:5000/api/users', formData);
+      const res = await axiosRequest.post('http://127.0.0.1:5000/api/users', formData);
       const user = res.data;
       close();
       login(user);
