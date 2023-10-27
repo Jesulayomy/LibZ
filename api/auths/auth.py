@@ -27,7 +27,7 @@ def login():
         abort(401, 'Incorrect password')
     login_user(user)
     token = jwt.encode(
-        {'id': user.id},
+        {'user_id': user.id},
         current_app.config['SECRET_KEY'],
         algorithm='HS256')
     response = make_response(jsonify(user.to_dict()), 200)

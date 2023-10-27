@@ -11,7 +11,7 @@ function ProfileBooks({ user }) {
     const getBooks = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/users/${user.id}/books`
+          `http://127.0.0.1:5000/api/users/${user.id}/books`
         );
         setBooks(response.data);
       } catch (error) {
@@ -24,7 +24,7 @@ function ProfileBooks({ user }) {
 
   const deleteBook = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/books/${id}`);
+      await axios.delete(`http://127.0.0.1:5000/api/books/${id}`);
       setBooks(books.filter((book) => book.id !== id));
     } catch (error) {
       console.log(error);

@@ -13,7 +13,7 @@ function Profile({ user }) {
 
   const handleLogout = async () => {
     try {
-      await axios.post('http://localhost:5000/auth/logout');
+      await axios.post('http://127.0.0.1:5000/auth/logout');
       logout();
     } catch (error) {
       console.log(error);

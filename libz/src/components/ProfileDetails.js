@@ -27,7 +27,7 @@ function ProfileDetails({ user }) {
     }
     try {
       const res = await axios.put(
-        `http://localhost:5000/api/users/${user.id}`,
+        `http://127.0.0.1:5000/api/users/${user.id}`,
         formData
       );
       const updatedUser = res.data;

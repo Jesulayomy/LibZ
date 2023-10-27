@@ -40,7 +40,7 @@ function BookUpload({ close }) {
     formData.append('book_file', file);
     try {
       const res = await axios.post(
-        'http://localhost:5000/api/books/',
+        'http://127.0.0.1:5000/api/books/',
         formData,
         {
           headers: {

@@ -15,12 +15,16 @@ from api.auths import auth
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = environ.get('SECRET_KEY')
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['REMEMBER_COOKIE_HTTPONLY'] = True
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 
 login_manager = LoginManager(app)
 
 CORS(
     auth,
-    resources={r"/*": {"origins": "*"}},
+    expose_headers=["Content-Type"],
+    resources={r"/*": {"origins": ["http://127.0.0.1:3000", "http://localhost:3000", "http://127.0.0.1:3000/", "http://localhost:3000/"]}},
     supports_credentials=True)
 
 app.register_blueprint(app_views)
@@ -28,7 +32,8 @@ app.register_blueprint(auth)
 
 cors = CORS(
     app,
-    resources={r"/*": {"origins": "*"}},
+    expose_headers=["Content-Type"],
+    resources={r"/*": {"origins": ["http://127.0.0.1:3000", "http://localhost:3000", "http://127.0.0.1:3000/", "http://localhost:3000/"]}},
     supports_credentials=True)
 
 

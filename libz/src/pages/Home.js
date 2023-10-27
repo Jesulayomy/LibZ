@@ -18,7 +18,7 @@ function Home({ showLogin, setShowLogin, searchedBooks }) {
   useEffect(() => {
     const getAllBooks = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/books', {
+        const res = await axios.get('http://127.0.0.1:5000/api/books', {
           withCredentials: true,
         });
         setBooks(res.data);
@@ -29,7 +29,7 @@ function Home({ showLogin, setShowLogin, searchedBooks }) {
 
     const getTopBooks = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/books/top', {
+        const res = await axios.get('http://127.0.0.1:5000/api/books/top', {
           withCredentials: true,
         });
         setTopBooks(res.data);
@@ -40,7 +40,7 @@ function Home({ showLogin, setShowLogin, searchedBooks }) {
 
     const getTopUploaders = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/users/top', {
+        const res = await axios.get('http://127.0.0.1:5000/api/users/top', {
           withCredentials: true,
         });
         setTopUploaders(res.data);

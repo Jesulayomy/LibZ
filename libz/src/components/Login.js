@@ -24,7 +24,7 @@ function Login({ close }) {
     formData.append('password', credentials.password);
     try {
       const res = await axios.post(
-        'http://localhost:5000/auth/login',
+        'http://127.0.0.1:5000/auth/login',
         formData,
         {
           headers: {

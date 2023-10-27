@@ -17,7 +17,7 @@ function App() {
   useEffect(() => {
     const getCurrentUser = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/auth/current_user', {
+        const res = await axios.get('http://127.0.0.1:5000/auth/current_user', {
           withCredentials: true,
         });
         const user = res.data;
@@ -36,7 +36,7 @@ function App() {
     } else {
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/books/search?q=${query}`,
+          `http://127.0.0.1:5000/api/books/search?q=${query}`,
           {
             withCredentials: true,
           }
