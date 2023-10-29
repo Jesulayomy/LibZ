@@ -21,7 +21,6 @@ function App() {
           withCredentials: true,
         });
         const user = res.data;
-        console.log(user);
         if (Object.keys(user).length > 0) login(user);
       } catch (err) {
         console.log(err);
