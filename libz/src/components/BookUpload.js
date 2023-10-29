@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
-import axios from 'axios';
+import axiosRequest from '../contexts/Axios';
 import '../styles/BookUpload.css';
 
 function BookUpload({ close }) {
@@ -39,7 +39,7 @@ function BookUpload({ close }) {
     formData.append('public', isPublic);
     formData.append('book_file', file);
     try {
-      const res = await axios.post(
+      const res = await axiosRequest.post(
         'http://127.0.0.1:5000/api/books/',
         formData,
         {

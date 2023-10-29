@@ -5,6 +5,7 @@
 from __future__ import print_function
 
 import os.path  # To confirm the token presence (No need to sign in)
+import fitz
 
 from datetime import datetime
 from google.auth.transport.requests import Request
@@ -23,6 +24,7 @@ from googleapiclient.http import (
 )
 # Creates a media file to upload
 from mimetypes import guess_type, guess_extension
+from PIL import Image
 from typing import (
     Dict,
     Type,
@@ -105,19 +107,39 @@ class Manager:
         if extension:
             if filename[len(filename) - len(extension):] != extension:
                 filename = filename + extension
+
+        self.create_thumbnail(file)
         file_metadata = {
             'name': filename,
             'parents': [parent]
         }
-        media = MediaIoBaseUpload(file.stream, mimetype=mimetype)
+        image_metadata = {
+            'name': file.filename[:-2] + 'ng',
+            'parents': [parent]
+        }
+        file_media = MediaIoBaseUpload(file.stream, mimetype=mimetype)
+        image_media = MediaFileUpload('{}'.format(
+            file.filename[:-2] + 'ng'), mimetype='image/png')
         try:
             file = Manager.SERVICE.files().create(
                 body=file_metadata,
-                media_body=media,
+                media_body=file_media,
                 fields='*'
             ).execute()
             Manager.SERVICE.permissions().create(
                 fileId=file.get('id'),
+                body={
+                    'role': 'reader',
+                    'type': 'anyone',
+                }
+            ).execute()
+            image = Manager.SERVICE.files().create(
+                body=image_metadata,
+                media_body=image_media,
+                fields='*'
+            ).execute()
+            Manager.SERVICE.permissions().create(
+                fileId=image.get('id'),
                 body={
                     'role': 'reader',
                     'type': 'anyone',
@@ -131,6 +153,8 @@ class Manager:
             'driveId': file.get('id'),
             'driveName': file.get('name'),
             'iconLink': file.get('iconLink'),
+            'thumbnailLink': image.get(
+                'webViewLink').split('view')[0] + 'preview',
             'size': int(file.get('size')),
             'parents': parent,
         }
@@ -145,3 +169,21 @@ class Manager:
         except Exception as e:
             print(e)
             return None
+
+    def create_thumbnail(self, file):
+        """ Creates a thumbnail for the pdf """
+        pdf_doc = fitz.open(stream=file.read(), filetype='pdf')
+        page = pdf_doc.load_page(0)
+        width_ratio = 400 / page.bound().width
+        height_ratio = 400 / page.bound().height
+        min_ratio = min(width_ratio, height_ratio)
+        matrix = fitz.Matrix(min_ratio, min_ratio)
+        pix = page.get_pixmap(matrix=matrix)
+        pil_image = Image.frombytes(
+            "RGB",
+            [pix.width, pix.height],
+            pix.samples
+        )
+        pil_image = pil_image.resize((400, 400))
+        pil_image.save(file.filename[:-2] + 'ng')
+        pdf_doc.close()

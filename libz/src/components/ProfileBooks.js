@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import axiosRequest from '../contexts/Axios';
 import ProfileBookCard from './ProfileBookCard';
 import SearchBox from './SearchBox';
 
@@ -10,7 +10,7 @@ function ProfileBooks({ user }) {
   useEffect(() => {
     const getBooks = async () => {
       try {
-        const response = await axios.get(
+        const response = await axiosRequest.get(
           `http://127.0.0.1:5000/api/users/${user.id}/books`
         );
         setBooks(response.data);
@@ -24,7 +24,7 @@ function ProfileBooks({ user }) {
 
   const deleteBook = async (id) => {
     try {
-      await axios.delete(`http://127.0.0.1:5000/api/books/${id}`);
+      await axiosRequest.delete(`http://127.0.0.1:5000/api/books/${id}`);
       setBooks(books.filter((book) => book.id !== id));
     } catch (error) {
       console.log(error);

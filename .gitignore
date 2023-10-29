@@ -2,7 +2,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
+istore/
 test/data*
 regen*
 *credentials*

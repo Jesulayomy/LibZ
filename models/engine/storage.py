@@ -24,11 +24,21 @@ from models.user import User
 
 load_dotenv()
 
+
 @event.listens_for(Book, "after_insert")
 def update_user_uploads(mapper, connection, target):
     """ Updates the user's uploads """
     statement = text(
         "UPDATE users SET uploads = uploads + 1 WHERE id = '{}'".format(
+            target.user_id))
+    connection.execute(statement)
+
+
+@event.listens_for(Book, "after_delete")
+def update_user_uploads_delete(mapper, connection, target):
+    """ Updates the user's uploads """
+    statement = text(
+        "UPDATE users SET uploads = uploads - 1 WHERE id = '{}'".format(
             target.user_id))
     connection.execute(statement)
 
@@ -162,7 +172,11 @@ class Storage:
                 count += session.query(Book).count()
                 return count
 
-    def search(self, cls: Union[str, Type[User], Type[Book]], query: str) -> list:
+    def search(
+            self,
+            cls: Union[str, Type[User], Type[Book]],
+            query: str
+            ) -> list:
         """ Searches for a book by title or author """
 
         if type(cls) is str:
