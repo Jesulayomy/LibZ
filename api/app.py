@@ -22,17 +22,37 @@ app.config['SESSION_COOKIE_SECURE'] = True
 login_manager = LoginManager(app)
 
 CORS(
-    auth,
-    resources={r"/*": {"origins": ["http://127.0.0.1:3000", "http://localhost:3000", "http://127.0.0.1:3000/", "http://localhost:3000/"]}},
-    supports_credentials=True)
+    app,
+    resources={
+        r"/*": {
+            "origins": [
+                "http://127.0.0.1:3000",
+                "http://localhost:3000",
+                "http://127.0.0.1:3000/",
+                "http://localhost:3000/"
+            ]
+        }
+    },
+    supports_credentials=True
+)
 
 app.register_blueprint(app_views)
 app.register_blueprint(auth)
 
 cors = CORS(
     app,
-    resources={r"/*": {"origins": ["http://127.0.0.1:3000", "http://localhost:3000", "http://127.0.0.1:3000/", "http://localhost:3000/"]}},
-    supports_credentials=True)
+    resources={
+        r"/*": {
+            "origins": [
+                "http://127.0.0.1:3000",
+                "http://localhost:3000",
+                "http://127.0.0.1:3000/",
+                "http://localhost:3000/"
+            ]
+        }
+    },
+    supports_credentials=True
+)
 
 
 @login_manager.user_loader
