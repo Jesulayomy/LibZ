@@ -175,7 +175,8 @@ class Storage:
     def search(
             self,
             cls: Union[str, Type[User], Type[Book]],
-            query: str
+            query: str,
+            user_id: str
             ) -> list:
         """ Searches for a book by title or author """
 
@@ -184,6 +185,13 @@ class Storage:
 
         with self.session_scope() as session:
             if cls == Book:
+                if user_id:
+                    query = session.query(
+                        Book).filter(
+                        Book.name.like(
+                            '%{}%'.format(
+                                query))).filter(
+                        Book.user_id == user_id).all()
                 query = session.query(
                     Book).filter(
                     Book.name.like(

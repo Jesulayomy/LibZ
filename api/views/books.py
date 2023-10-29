@@ -115,5 +115,6 @@ def get_top_books():
 def search_books():
     """ Returns the books that match the search """
     query = request.args.get('q', '')
-    books = storage.search('Book', query)
+    user_id = request.args.get('user_id', '')
+    books = storage.search('Book', query, user_id)
     return jsonify([book.to_dict() for book in books])
