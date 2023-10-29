@@ -46,11 +46,17 @@ def post_user():
     storage.add(user)
     login_user(user)
     token = jwt.encode(
-        {'id': user.id},
+        {'user_id': user.id},
         current_app.config['SECRET_KEY'],
         algorithm='HS256')
     response = make_response(jsonify(user.to_dict()), 201)
-    response.set_cookie('token', token, httponly=False)
+    response.set_cookie(
+        'token',
+        token,
+        samesite='None',
+        httponly=False,
+        secure=True
+    )
     return response
 
 
