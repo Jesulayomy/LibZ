@@ -6,7 +6,7 @@ function ProfileBookCard({ book, deleteBook }) {
     <div className='book-card'>
       <div className='header'>
         <img
-          src='https://picsum.photos/200/300'
+          src={book.thumbnailLink}
           alt={book.title}
           className='profile-book-card-image'
         />

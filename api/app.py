@@ -15,24 +15,27 @@ from api.auths import auth
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = environ.get('SECRET_KEY')
-app.config['SESSION_COOKIE_HTTPONLY'] = False
-app.config['SESSION_COOKIE_SAMESITE'] = 'None'
-app.config['SESSION_COOKIE_SECURE'] = True
+if environ.get('API_ENV') != 'console':
+    app.config['SESSION_COOKIE_HTTPONLY'] = False
+    app.config['SESSION_COOKIE_SAMESITE'] = 'None'
+    app.config['SESSION_COOKIE_SECURE'] = True
+    origins = [
+        'http://127.0.0.1:3000',
+        'http://localhost:3000',
+        'http://127.0.0.1:3000/',
+        'http://localhost:3000/'
+    ]
+else:
+    origins = '*'
+    print('API_ENV is console, CORS is set to *')
+
 
 login_manager = LoginManager(app)
 
+
 CORS(
     app,
-    resources={
-        r"/*": {
-            "origins": [
-                "http://127.0.0.1:3000",
-                "http://localhost:3000",
-                "http://127.0.0.1:3000/",
-                "http://localhost:3000/"
-            ]
-        }
-    },
+    resources={r"/*": {"origins": origins}},
     supports_credentials=True
 )
 
@@ -41,16 +44,7 @@ app.register_blueprint(auth)
 
 cors = CORS(
     app,
-    resources={
-        r"/*": {
-            "origins": [
-                "http://127.0.0.1:3000",
-                "http://localhost:3000",
-                "http://127.0.0.1:3000/",
-                "http://localhost:3000/"
-            ]
-        }
-    },
+    resources={r"/*": {"origins": origins}},
     supports_credentials=True
 )
 
