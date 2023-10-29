@@ -9,6 +9,10 @@
 - [x] Authenticate requests
 - [x] Proxy methods for faster lookups without fetching the entire database
 - [x] Handle CORS access
+- [x] Implement Thumbnails
+- [ ] Implement profile pictures
+- [ ] Implement search
+- [ ] Implement pagination
 - [ ]
 
 ## Pending Approval

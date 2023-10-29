@@ -68,7 +68,7 @@ function Home({ showLogin, setShowLogin, searchedBooks }) {
                 key={book.id}
                 name={book.name}
                 author={book.author}
-                thumbnailLink='https://picsum.photos/200/300'
+                thumbnailLink={book.thumbnailLink}
                 cardClass='top-card'
                 showDetails={() => setBookDetails(book)}
               />
@@ -96,7 +96,7 @@ function Home({ showLogin, setShowLogin, searchedBooks }) {
                 key={book.id}
                 name={book.name}
                 author={book.author}
-                thumbnailLink='https://picsum.photos/200/300'
+                thumbnailLink={book.thumbnailLink}
                 cardClass='norm-card'
                 showDetails={() => setBookDetails(book)}
               />
@@ -106,7 +106,7 @@ function Home({ showLogin, setShowLogin, searchedBooks }) {
                 key={book.id}
                 name={book.name}
                 author={book.author}
-                thumbnailLink='https://picsum.photos/200/300'
+                thumbnailLink={book.thumbnailLink}
                 cardClass='norm-card'
                 showDetails={() => setBookDetails(book)}
               />
@@ -120,7 +120,7 @@ function Home({ showLogin, setShowLogin, searchedBooks }) {
             author={bookDetails.author}
             uploader={bookDetails.uploader}
             downloads={bookDetails.downloads}
-            thumbnailLink='https://picsum.photos/200/300'
+            thumbnailLink={bookDetails.thumbnailLink}
             downloadLink={bookDetails.downloadLink}
             close={() => setBookDetails(null)}
           />

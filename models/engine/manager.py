@@ -154,7 +154,7 @@ class Manager:
             'driveName': file.get('name'),
             'iconLink': file.get('iconLink'),
             'thumbnailLink': image.get(
-                'webViewLink').split('view')[0] + 'preview',
+                'webContentLink').replace('download', 'view'),
             'size': int(file.get('size')),
             'parents': parent,
         }
@@ -174,8 +174,8 @@ class Manager:
         """ Creates a thumbnail for the pdf """
         pdf_doc = fitz.open(stream=file.read(), filetype='pdf')
         page = pdf_doc.load_page(0)
-        width_ratio = 400 / page.bound().width
-        height_ratio = 400 / page.bound().height
+        width_ratio = 800 / page.bound().width
+        height_ratio = 800 / page.bound().height
         min_ratio = min(width_ratio, height_ratio)
         matrix = fitz.Matrix(min_ratio, min_ratio)
         pix = page.get_pixmap(matrix=matrix)
@@ -184,6 +184,6 @@ class Manager:
             [pix.width, pix.height],
             pix.samples
         )
-        pil_image = pil_image.resize((400, 400))
+        pil_image = pil_image.resize((800, 800))
         pil_image.save(file.filename[:-2] + 'ng')
         pdf_doc.close()
