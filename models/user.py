@@ -76,6 +76,11 @@ class User(BaseModel, UserMixin, Base):
         cascade="all"
     )
 
+    image = Column(
+        String(40),
+        nullable=True
+    )
+
     # Drive folder refrencing user
     folder = Column(
         String(40),

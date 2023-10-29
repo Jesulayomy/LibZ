@@ -4,8 +4,9 @@
 """
 from __future__ import print_function
 
-import os.path  # To confirm the token presence (No need to sign in)
+# To confirm the token presence (No need to sign in)
 import fitz
+import os
 
 from datetime import datetime
 from google.auth.transport.requests import Request
@@ -30,6 +31,7 @@ from typing import (
     Type,
     Union,
 )
+from uuid import uuid4
 
 # from models.base import Base
 from models.book import Book
@@ -108,18 +110,12 @@ class Manager:
             if filename[len(filename) - len(extension):] != extension:
                 filename = filename + extension
 
-        self.create_thumbnail(file)
+        image = self.create_thumbnail(file)
         file_metadata = {
             'name': filename,
             'parents': [parent]
         }
-        image_metadata = {
-            'name': file.filename[:-2] + 'ng',
-            'parents': [parent]
-        }
         file_media = MediaIoBaseUpload(file.stream, mimetype=mimetype)
-        image_media = MediaFileUpload('{}'.format(
-            file.filename[:-2] + 'ng'), mimetype='image/png')
         try:
             file = Manager.SERVICE.files().create(
                 body=file_metadata,
@@ -133,18 +129,6 @@ class Manager:
                     'type': 'anyone',
                 }
             ).execute()
-            image = Manager.SERVICE.files().create(
-                body=image_metadata,
-                media_body=image_media,
-                fields='*'
-            ).execute()
-            Manager.SERVICE.permissions().create(
-                fileId=image.get('id'),
-                body={
-                    'role': 'reader',
-                    'type': 'anyone',
-                }
-            ).execute()
         except Exception as e:
             print(e)
             return None
@@ -153,8 +137,7 @@ class Manager:
             'driveId': file.get('id'),
             'driveName': file.get('name'),
             'iconLink': file.get('iconLink'),
-            'thumbnailLink': image.get(
-                'webContentLink').replace('download', 'view'),
+            'thumbnailLink': image,
             'size': int(file.get('size')),
             'parents': parent,
         }
@@ -185,5 +168,9 @@ class Manager:
             pix.samples
         )
         pil_image = pil_image.resize((800, 800))
-        pil_image.save(file.filename[:-2] + 'ng')
+        home = os.getcwd()
+        filename = str(uuid4()) + '.png'
+        path = os.path.join(home, 'libz/src/images', filename)
+        pil_image.save(path)
         pdf_doc.close()
+        return filename

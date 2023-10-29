@@ -23,25 +23,6 @@ function Login({ close }) {
     formData.append('email', credentials.email);
     formData.append('password', credentials.password);
 
-    // axiosRequest
-    //   .post('http://127.0.0.1:5000/auth/login',
-    //   { withCredentials: true },
-    //   formData,
-    //   {
-    //     headers: {
-    //       'Content_type': 'multipart/form-data',
-    //     },
-    //   },
-    //   )
-    //   .then((res) => {
-    //     const user = res.data;
-    //     close();
-    //     login(user);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   })
-    // };
     try {
       const res = await axiosRequest.post(
         'http://127.0.0.1:5000/auth/login',
