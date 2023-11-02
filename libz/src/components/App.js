@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useState, useEffect, useContext } from 'react';
-import axiosRequest from '../contexts/Axios';
+import axiosRequest from '../utils/Axios';
 import { AuthContext } from '../contexts/AuthContext';
 import Home from '../pages/Home';
 import Layout from '../pages/Layout';
@@ -17,9 +17,12 @@ function App() {
   useEffect(() => {
     const getCurrentUser = async () => {
       try {
-        const res = await axiosRequest.get('http://127.0.0.1:5000/auth/current_user', {
-          withCredentials: true,
-        });
+        const res = await axiosRequest.get(
+          'http://127.0.0.1:5000/auth/current_user',
+          {
+            withCredentials: true,
+          }
+        );
         const user = res.data;
         if (Object.keys(user).length > 0) login(user);
       } catch (err) {

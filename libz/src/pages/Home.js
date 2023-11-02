@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { RiFileUploadFill } from 'react-icons/ri';
 import axiosRequest from '../utils/Axios';
+import { AuthContext } from '../contexts/AuthContext';
 import Card from '../components/Card';
 import TopUpload from '../components/TopUpload';
 import BookDetails from '../components/BookDetails';
@@ -9,6 +10,7 @@ import AuthPage from '../components/AuthPage';
 import '../styles/Home.css';
 
 function Home({ showLogin, setShowLogin, searchedBooks }) {
+  const { isLoggedIn } = useContext(AuthContext);
   const [books, setBooks] = useState([]);
   const [topBooks, setTopBooks] = useState([]);
   const [topUploaders, setTopUploaders] = useState([]);
@@ -142,9 +144,11 @@ function Home({ showLogin, setShowLogin, searchedBooks }) {
           <AuthPage close={() => setShowLogin(false)} />
         </div>
       )}
-      <button className='upload-button' onClick={() => setShowUpload(true)}>
-        <RiFileUploadFill color='white' />
-      </button>
+      {isLoggedIn && (
+        <button className='upload-button' onClick={() => setShowUpload(true)}>
+          <RiFileUploadFill color='white' />
+        </button>
+      )}
     </div>
   );
 }

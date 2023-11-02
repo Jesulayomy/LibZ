@@ -21,7 +21,10 @@ function Profile({ user }) {
     }
   };
 
-  if (!isLoggedIn) navigate('/');
+  if (!isLoggedIn) {
+    console.log('Not logged in');
+    navigate('/');
+  }
 
   return (
     <div className='profile-page'>

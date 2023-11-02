@@ -27,21 +27,6 @@ def get_users():
 def post_user():
     """ Creates a user """
     data = request.form.to_dict(flat=True)
-    image = request.files.get('image')
-    if image:
-        extension = image.filename.split('.')[-1]
-        allowed_ext = [
-            'png',
-            'jpg',
-            'jpeg',
-            'gif',
-        ]
-        if extension not in allowed_ext:
-            abort(400, 'Invalid file type')
-        filename = f'{uuid4()}.{extension}'
-        home = os.getcwd()
-        image.save(os.path.join(home, 'libz/src/images', filename))
-        data['image'] = filename
     if not data:
         abort(400, 'Not a JSON')
     required = [
@@ -93,6 +78,21 @@ def put_user(user_id):
     if not user:
         abort(404)
     data = request.form.to_dict(flat=True)
+    image = request.files.get('image')
+    if image:
+        extension = image.filename.split('.')[-1]
+        allowed_ext = [
+            'png',
+            'jpg',
+            'jpeg',
+            'gif',
+        ]
+        if extension not in allowed_ext:
+            abort(400, 'Invalid file type')
+        filename = f'{uuid4()}.{extension}'
+        home = os.getcwd()
+        image.save(os.path.join(home, 'libz/src/images', filename))
+        data['image'] = filename
     if not data:
         abort(400, 'Not a JSON')
     ignore = [

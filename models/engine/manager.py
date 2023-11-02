@@ -4,8 +4,7 @@
 """
 from __future__ import print_function
 
-# To confirm the token presence (No need to sign in)
-import fitz
+# import fitz
 import os
 
 from datetime import datetime
@@ -110,7 +109,7 @@ class Manager:
             if filename[len(filename) - len(extension):] != extension:
                 filename = filename + extension
 
-        image = self.create_thumbnail(file)
+        # image = self.create_thumbnail(file)
         file_metadata = {
             'name': filename,
             'parents': [parent]
@@ -137,7 +136,7 @@ class Manager:
             'driveId': file.get('id'),
             'driveName': file.get('name'),
             'iconLink': file.get('iconLink'),
-            'thumbnailLink': image,
+            # 'thumbnailLink': image,
             'size': int(file.get('size')),
             'parents': parent,
         }
@@ -153,24 +152,24 @@ class Manager:
             print(e)
             return None
 
-    def create_thumbnail(self, file):
-        """ Creates a thumbnail for the pdf """
-        pdf_doc = fitz.open(stream=file.read(), filetype='pdf')
-        page = pdf_doc.load_page(0)
-        width_ratio = 800 / page.bound().width
-        height_ratio = 800 / page.bound().height
-        min_ratio = min(width_ratio, height_ratio)
-        matrix = fitz.Matrix(min_ratio, min_ratio)
-        pix = page.get_pixmap(matrix=matrix)
-        pil_image = Image.frombytes(
-            "RGB",
-            [pix.width, pix.height],
-            pix.samples
-        )
-        pil_image = pil_image.resize((800, 800))
-        home = os.getcwd()
-        filename = str(uuid4()) + '.png'
-        path = os.path.join(home, 'libz/src/images', filename)
-        pil_image.save(path)
-        pdf_doc.close()
-        return filename
+    # def create_thumbnail(self, file):
+    #     """ Creates a thumbnail for the pdf """
+    #     pdf_doc = fitz.open(stream=file.read(), filetype='pdf')
+    #     page = pdf_doc.load_page(0)
+    #     width_ratio = 800 / page.bound().width
+    #     height_ratio = 800 / page.bound().height
+    #     min_ratio = min(width_ratio, height_ratio)
+    #     matrix = fitz.Matrix(min_ratio, min_ratio)
+    #     pix = page.get_pixmap(matrix=matrix)
+    #     pil_image = Image.frombytes(
+    #         "RGB",
+    #         [pix.width, pix.height],
+    #         pix.samples
+    #     )
+    #     pil_image = pil_image.resize((800, 800))
+    #     home = os.getcwd()
+    #     filename = str(uuid4()) + '.png'
+    #     path = os.path.join(home, 'libz/src/images', filename)
+    #     pil_image.save(path)
+    #     pdf_doc.close()
+    #     return filename
