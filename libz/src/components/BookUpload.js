@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
-import axiosRequest from '../contexts/Axios';
+import axiosRequest from '../utils/Axios';
 import '../styles/BookUpload.css';
 
 function BookUpload({ close }) {

@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react';
-import axiosRequest from '../contexts/Axios';
+import axiosRequest from '../utils/Axios';
 import ProfileBookCard from './ProfileBookCard';
 import SearchBox from './SearchBox';
 

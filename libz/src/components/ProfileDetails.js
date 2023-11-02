@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
-import axiosRequest from '../contexts/Axios';
+import axiosRequest from '../utils/Axios';
 
 function ProfileDetails({ user }) {
   const { login } = useContext(AuthContext);

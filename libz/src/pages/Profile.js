@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { useNavigate } from 'react-router';
-import axiosRequest from '../contexts/Axios';
+import axiosRequest from '../utils/Axios';
 import { BiLogOut } from 'react-icons/bi';
 import { AuthContext } from '../contexts/AuthContext';
 import ProfileDetails from '../components/ProfileDetails';
