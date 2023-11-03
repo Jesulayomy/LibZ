@@ -1,6 +1,7 @@
 import { useState, useContext } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
 import axiosRequest from '../utils/Axios';
+import default_user from '../images/default_user.png'
 
 function ProfileDetails({ user }) {
   const { login } = useContext(AuthContext);
@@ -10,14 +11,22 @@ function ProfileDetails({ user }) {
     last_name: user.last_name,
     display_name: user.display_name || user.first_name + ' ' + user.last_name,
     phone: user.phone,
+    image: user.image,
   });
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setUpdatedData((prevUpdatedData) => ({
-      ...prevUpdatedData,
-      [name]: value,
-    }));
+    if (e.target.name === 'image') {
+      setUpdatedData((prevUpdatedData) => ({
+        ...prevUpdatedData,
+        image: e.target.files[0],
+      }));
+    } else {
+      const { name, value } = e.target;
+      setUpdatedData((prevUpdatedData) => ({
+        ...prevUpdatedData,
+        [name]: value,
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -30,8 +39,8 @@ function ProfileDetails({ user }) {
         `http://127.0.0.1:5000/api/users/${user.id}`,
         formData
       );
-      const updatedUser = res.data;
-      login(updatedUser);
+      // const updatedUser = res.data;
+      // login(updatedUser);
       setEditing(false);
     } catch (error) {
       console.log(error);
@@ -48,7 +57,10 @@ function ProfileDetails({ user }) {
   return (
     <div className='profile'>
       <div className='profile-image'>
-        <img src='https://picsum.photos/200/300' alt='Profile' />
+        <img src={user.image ? require(`../images/${user.image}`) : default_user} alt='Profile' />
+        {editing && (
+            <input type='file' name='image' onChange={handleChange} />
+        )}
       </div>
       <div className='profile-details'>
         <div className='detail'>

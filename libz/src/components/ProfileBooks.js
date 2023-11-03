@@ -33,7 +33,7 @@ function ProfileBooks({ user }) {
 
   return (
     <div className='profile-books'>
-      <SearchBox />
+      {/* <SearchBox /> */}
       <div className='profile-books-list'>
         {books.map((book) => (
           <ProfileBookCard key={book.id} book={book} deleteBook={deleteBook} />

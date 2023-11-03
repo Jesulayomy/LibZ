@@ -89,7 +89,7 @@ function Home({ showLogin, setShowLogin, searchedBooks }) {
             {topUploaders.map((uploader) => (
               <TopUpload
                 key={uploader.id}
-                avatarUrl='https://picsum.photos/200/300'
+                avatarUrl={uploader.image}
                 displayName={uploader.display_name}
                 uploads={uploader.uploads}
               />
@@ -123,6 +123,7 @@ function Home({ showLogin, setShowLogin, searchedBooks }) {
       {bookDetails && (
         <div className='modal'>
           <BookDetails
+            id={bookDetails.id}
             name={bookDetails.name}
             description={bookDetails.description}
             author={bookDetails.author}

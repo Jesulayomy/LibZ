@@ -1,12 +1,13 @@
 import { BiDownload } from 'react-icons/bi';
 import { MdDelete } from 'react-icons/md';
+import default_book from '../images/default_book.jpg';
 
 function ProfileBookCard({ book, deleteBook }) {
   return (
     <div className='book-card'>
       <div className='header'>
         <img
-          src={book.thumbnailLink}
+          src={book.thumbnailLink ? require(`../images/${book.thumbnailLink}`) : default_book}
           alt={book.title}
           className='profile-book-card-image'
         />

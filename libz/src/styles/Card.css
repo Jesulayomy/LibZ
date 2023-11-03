@@ -9,6 +9,7 @@
 .top-card {
     border: 2px solid #c33149;
     border-radius: 7px;
+    margin-right: 1%;
 }
 
 .card.norm-card {

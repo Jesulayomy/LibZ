@@ -23,7 +23,6 @@ function Profile({ user }) {
 
   if (!isLoggedIn) {
     console.log('Not logged in');
-    navigate('/');
   }
 
   return (
