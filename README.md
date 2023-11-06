@@ -9,10 +9,12 @@
 
 #### Dependencies
 > Python 3.10.11
+
 > MySQL 8.0.32
+
 > Node 16.20.2
+
 > npm 8.19.4
-> React ???
 
 #### Requirements
 All requirements are stored in the `requirements.txt` [file](test/requirements.txt). To install them, run the following command:
