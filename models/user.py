@@ -77,7 +77,7 @@ class User(BaseModel, UserMixin, Base):
     )
 
     image = Column(
-        String(40),
+        String(64),
         nullable=True
     )
 
